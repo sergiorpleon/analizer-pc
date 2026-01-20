@@ -3,7 +3,7 @@ FROM php:8.2-apache
 # 1. Dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git unzip libpq-dev libzip-dev \
-    && docker-php-ext-install pdo pdo_pgsql zip \
+    && docker-php-ext-install pdo pdo_pgsql pgsql zip \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Instalamos Composer
