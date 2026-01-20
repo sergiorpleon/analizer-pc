@@ -34,7 +34,7 @@ tmp/
 
 # --- Específicos de Antigravity (IA) ---
 # Si descargas modelos de Ollama localmente en una carpeta del proyecto
-models/
+/models/
 *.bin
 *.gguf
 
