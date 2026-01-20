@@ -1,17 +1,18 @@
 <?php
-// src/Controllers/HomeController.php
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
 use App\Models\Database;
-use App\Models\OllamaService;
+use App\Services\Ai\OllamaService;
 
 class HomeController
 {
     /**
      * Muestra la página principal con tests de conexión
      */
-    public function index()
+    public function index(): void
     {
         $messages = [];
 
@@ -34,11 +35,12 @@ class HomeController
         // Test de conexión a Ollama
         try {
             $ollama = new OllamaService();
-            $response = $ollama->generateText('Dime hola en una frase corta');
-            $messages[] = [
-                'type' => 'success',
-                'text' => '✅ Ollama responde: ' . $response
-            ];
+            if ($ollama->testConnection()) {
+                $messages[] = [
+                    'type' => 'success',
+                    'text' => '✅ Conexión con Ollama exitosa.'
+                ];
+            }
         } catch (\Exception $e) {
             $messages[] = [
                 'type' => 'error',
@@ -46,7 +48,6 @@ class HomeController
             ];
         }
 
-        // Cargar vista
         require __DIR__ . '/../Views/home.php';
     }
 }

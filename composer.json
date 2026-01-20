@@ -11,9 +11,10 @@
     ],
     "require": {
         "php": ">=8.0",
-        "guzzlehttp/guzzle": "^7.0",
         "ext-pdo": "*",
-        "ext-pgsql": "*"
+        "ext-pgsql": "*",
+        "dompdf/dompdf": "^3.1",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0"

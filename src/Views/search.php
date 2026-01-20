@@ -56,7 +56,19 @@ ob_start();
 <?php endif; ?>
 
 <?php if (!empty($results)): ?>
-    <h3>Resultados encontrados:</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3>Resultados encontrados:</h3>
+        <div style="display: flex; gap: 10px;">
+            <a href="/inform?format=json" class="btn-export"
+                style="background: #f39c12; padding: 8px 15px; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em; font-weight: bold;">JSON</a>
+            <a href="/inform?format=xml" class="btn-export"
+                style="background: #e67e22; padding: 8px 15px; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em; font-weight: bold;">XML</a>
+            <a href="/inform?format=csv" class="btn-export"
+                style="background: #27ae60; padding: 8px 15px; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em; font-weight: bold;">CSV</a>
+            <a href="/inform?format=pdf" class="btn-export"
+                style="background: #c0392b; padding: 8px 15px; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em; font-weight: bold;">PDF</a>
+        </div>
+    </div>
 
     <?php foreach ($results as $result): ?>
         <div style="border: 2px solid #667eea; margin: 15px 0; padding: 20px; border-radius: 10px; background: #f8f9fa;">

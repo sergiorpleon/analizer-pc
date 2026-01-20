@@ -23,6 +23,7 @@ use App\Controllers\SearchController;
 use App\Controllers\DataController;
 use App\Controllers\AuthController;
 use App\Controllers\ErrorController;
+use App\Controllers\InformController;
 
 // Obtener la URI solicitada
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -45,6 +46,11 @@ try {
             // Requiere autenticación
             $controller = new DataController();
             $controller->import();
+            break;
+
+        case '/inform':
+            $controller = new InformController();
+            $controller->index();
             break;
 
         case '/login':
