@@ -1,0 +1,47 @@
+services:
+  # Servicio PHP con Composer
+  app:
+    build: .
+    container_name: php-app
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:80"
+    networks:
+      - ai-network
+    depends_on:
+      - db
+
+  # Base de Datos con PGVector
+  db:
+    image: ankane/pgvector:latest # Imagen oficial con soporte de vectores
+    container_name: postgres-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ai_db
+    networks:
+      - ai-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # <--- Añade esto
+
+  # IA Local con Ollama
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-service
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - ai-network
+
+networks:
+  ai-network:
+    driver: bridge
+
+volumes:
+  ollama_data:
+  postgres_data:
