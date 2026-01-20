@@ -94,7 +94,7 @@ ob_start();
         </div>
     <?php endforeach; ?>
 
-<?php elseif (!empty($query) && !isset($noData)): ?>
+<?php elseif (!empty($query) && !$noData): ?>
     <div class="message" style="background: #fff3cd; color: #856404; border: 1px solid #ffeeba;">
         ℹ️ No se encontraron resultados para tu búsqueda.
     </div>

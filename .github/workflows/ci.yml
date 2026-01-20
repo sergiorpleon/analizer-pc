@@ -1,0 +1,44 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build and start Docker containers
+        run: docker compose up -d --build
+
+      - name: Wait for Database
+        run: |
+          echo "Waiting for PostgreSQL to be ready..."
+          # We use a loop to wait for the database to accept connections
+          for i in {1..30}; do
+            if docker exec postgres-db pg_isready -U user -d ai_db; then
+              echo "PostgreSQL is ready!"
+              break
+            fi
+            echo "Waiting..."
+            sleep 2
+          done
+
+      - name: Initialize Database Table
+        run: |
+          # Ensure the components table exists for the tests
+          docker exec php-app php -r "require 'vendor/autoload.php'; \$db = App\Models\Database::getInstance(); \$db->initializeTable();"
+
+      - name: Run PHPUnit Tests
+        run: docker exec php-app ./vendor/bin/phpunit --testdox
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down

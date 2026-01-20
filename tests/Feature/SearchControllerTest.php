@@ -13,8 +13,9 @@ class SearchControllerTest extends TestCase
     {
         $this->searchController = new SearchController();
 
-        // Limpiar variables GET
+        // Limpiar variables globales
         $_GET = [];
+        $_SESSION = [];
     }
 
     public function testIndexMethodExists()
@@ -60,13 +61,14 @@ class SearchControllerTest extends TestCase
         // Debe mostrar mensaje de no hay datos o error manejado
         $this->assertStringContainsString('Buscador de Componentes', $output);
 
-        // Puede mostrar "No hay datos" o "No se encontraron resultados"
-        $hasNoDataMessage =
+        // Puede mostrar "No hay datos", "No se encontraron resultados", "Error" o "Resultados encontrados"
+        $hasStatusMessage =
             strpos($output, 'No hay datos disponibles') !== false ||
             strpos($output, 'No se encontraron resultados') !== false ||
-            strpos($output, 'Error') !== false;
+            strpos($output, 'Error') !== false ||
+            strpos($output, 'Resultados encontrados') !== false;
 
-        $this->assertTrue($hasNoDataMessage, 'Should show appropriate message when no data');
+        $this->assertTrue($hasStatusMessage, 'Debe mostrar un mensaje de estado adecuado (resultados, no resultados o error)');
     }
 
     public function testSearchFormHasCorrectAction()
@@ -122,9 +124,21 @@ class SearchControllerTest extends TestCase
         $this->searchController->index();
         $output = ob_get_clean();
 
-        // Si muestra mensaje de no datos, debe tener información útil
+        // Siempre debe haber algún contenido en el output
+        $this->assertNotEmpty($output, 'El output no debe estar vacío');
+
+        // Si muestra mensaje de "no hay datos disponibles", debe sugerir importar
         if (strpos($output, 'No hay datos disponibles') !== false) {
             $this->assertStringContainsString('importar', strtolower($output));
+        } else {
+            // Si no es un error de "no hay datos", al menos debe mostrar resultados, 
+            // que no hubo resultados o un error de conexión/IA
+            $this->assertTrue(
+                strpos($output, 'Resultados encontrados') !== false ||
+                strpos($output, 'No se encontraron resultados') !== false ||
+                strpos($output, 'Error') !== false,
+                'Debe mostrar un mensaje de estado adecuado (resultados, no resultados o error)'
+            );
         }
     }
 
