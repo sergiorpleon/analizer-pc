@@ -4,7 +4,7 @@
  * Ejecutar: docker-compose exec app php init_users.php
  */
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Models\User;
 

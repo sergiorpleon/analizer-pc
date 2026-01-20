@@ -8,7 +8,7 @@ echo "=== Verificación de Estructura MVC ===\n\n";
 
 // Verificar archivos de configuración
 echo "📋 Verificando archivos de configuración...\n";
-$configFile = __DIR__ . '/config/config.php';
+$configFile = __DIR__ . '/../config/config.php';
 if (file_exists($configFile)) {
     echo "✅ config/config.php existe\n";
 } else {
@@ -24,7 +24,7 @@ $models = [
 ];
 
 foreach ($models as $model) {
-    $path = __DIR__ . '/' . $model;
+    $path = __DIR__ . '/../' . $model;
     if (file_exists($path)) {
         echo "✅ $model existe\n";
     } else {
@@ -41,7 +41,7 @@ $controllers = [
 ];
 
 foreach ($controllers as $controller) {
-    $path = __DIR__ . '/' . $controller;
+    $path = __DIR__ . '/../' . $controller;
     if (file_exists($path)) {
         echo "✅ $controller existe\n";
     } else {
@@ -58,7 +58,7 @@ $views = [
 ];
 
 foreach ($views as $view) {
-    $path = __DIR__ . '/' . $view;
+    $path = __DIR__ . '/../' . $view;
     if (file_exists($path)) {
         echo "✅ $view existe\n";
     } else {
@@ -68,7 +68,7 @@ foreach ($views as $view) {
 
 // Verificar Front Controller
 echo "\n🚀 Verificando Front Controller...\n";
-$frontController = __DIR__ . '/public/index.php';
+$frontController = __DIR__ . '/../public/index.php';
 if (file_exists($frontController)) {
     echo "✅ public/index.php existe\n";
 } else {
@@ -77,7 +77,7 @@ if (file_exists($frontController)) {
 
 // Verificar .htaccess
 echo "\n🔧 Verificando .htaccess...\n";
-$htaccess = __DIR__ . '/.htaccess';
+$htaccess = __DIR__ . '/../.htaccess';
 if (file_exists($htaccess)) {
     echo "✅ .htaccess existe\n";
 } else {
@@ -93,7 +93,7 @@ $oldFiles = [
 ];
 
 foreach ($oldFiles as $oldFile) {
-    $path = __DIR__ . '/' . $oldFile;
+    $path = __DIR__ . '/../' . $oldFile;
     if (file_exists($path)) {
         echo "✅ $oldFile renombrado correctamente\n";
     } else {

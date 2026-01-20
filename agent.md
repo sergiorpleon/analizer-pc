@@ -3,6 +3,8 @@
 ## Contexto del proyecto
 Estoy construyendo un agente de informacion tecnica usando PHP simple(sin framework pesados) bajo arquitectura PHP manual.
 
+Mantener la documentación técnica (.md) actualizada pero minimalista. Agrupar el contexto en una carpeta específica (ej. /docs) para no ensuciar la raíz del proyecto.
+
 ## Reglas de arquitectura
 1. **Patron MVC** Separa estrictamente Controladores, Modelos y Vistas
 2. **Patron SOLID** Implementa principios SOLID (S - Single Responsibility, O - Open/Closed, L - Liskov Substitution, I - Interface Segregation, D - Dependency Inversion)

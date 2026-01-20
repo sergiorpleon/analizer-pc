@@ -1,152 +1,84 @@
-# Analizador de Componentes PC con IA
+# 🔍 Analizador de Componentes PC con IA
 
-Sistema de búsqueda de componentes de PC usando embeddings vectoriales con Ollama y PostgreSQL (pgvector).
+Sistema avanzado de búsqueda semántica de componentes de PC utilizando **IA (Embeddings)**, **PostgreSQL (pgvector)** y una arquitectura **MVC** robusta.
 
-## 🏗️ Arquitectura MVC
+## 🌟 Características Principales
 
-El proyecto ha sido reestructurado siguiendo el patrón **Model-View-Controller (MVC)**:
+- **Búsqueda Semántica**: Encuentra componentes por descripción natural (ej: "procesador para gaming barato") gracias a Ollama.
+- **Arquitectura MVC**: Separación clara de responsabilidades para un código mantenible y escalable.
+- **Sistema de Autenticación**: Gestión de usuarios y sesiones segura.
+- **Exportación Multiformato**: Genera informes de resultados en **JSON, XML, CSV y PDF**.
+- **CI/CD Integrado**: Pipeline de GitHub Actions para pruebas automáticas con Docker.
+- **Diseño Moderno**: Interfaz limpia con CSS moderno y layouts organizados.
 
-```
+## 🏗️ Estructura del Proyecto
+
+```text
 analizer-pc/
-├── config/
-│   └── config.php              # Configuración centralizada
+├── .github/workflows/      # CI/CD (GitHub Actions)
+├── bin/                    # Scripts de utilidad (init-db.php)
+├── config/                 # Configuración centralizada
+├── public/                 # Punto de entrada (index.php) y assets
 ├── src/
-│   ├── Controllers/            # Lógica de negocio
-│   │   ├── HomeController.php
-│   │   ├── SearchController.php
-│   │   └── DataController.php
-│   ├── Models/                 # Acceso a datos
-│   │   ├── Database.php
-│   │   ├── Component.php
-│   │   └── OllamaService.php
-│   └── Views/                  # Presentación
-│       ├── layouts/
-│       │   └── main.php
-│       ├── home.php
-│       └── search.php
-├── public/
-│   └── index.php              # Front Controller (punto de entrada)
-├── vendor/                     # Dependencias de Composer
-├── .htaccess                  # Reescritura de URLs
-└── docker-compose.yaml        # Configuración de Docker
+│   ├── Controllers/        # Lógica de control (Auth, Search, Data, etc.)
+│   ├── Enums/              # Enumeraciones (SessionKey)
+│   ├── Models/             # Modelos de datos y servicios core
+│   ├── Services/           # Servicios de IA y Exportación (SOLID)
+│   └── Views/              # Plantillas y layouts
+├── tests/                  # Suite de pruebas (Unitarias y Feature)
+├── compose.yaml            # Orquestación de contenedores
+└── Dockerfile              # Configuración de la imagen PHP
 ```
 
-## 📋 Componentes del MVC
+## 🚀 Instalación y Uso Rápido
 
-### Models (Modelos)
-- **Database.php**: Gestión de conexión a PostgreSQL con patrón Singleton
-- **Component.php**: CRUD de componentes y búsqueda vectorial
-- **OllamaService.php**: Interacción con Ollama para embeddings y generación de texto
+### Requisitos
+- Docker y Docker Compose
+- Ollama (opcional si se usa el contenedor incluido)
 
-### Views (Vistas)
-- **layouts/main.php**: Layout principal con navegación
-- **home.php**: Página de inicio con tests de conexión
-- **search.php**: Interfaz de búsqueda de componentes
+### 1. Iniciar con Docker
+```bash
+docker compose up -d --build
+```
 
-### Controllers (Controladores)
-- **HomeController.php**: Maneja la página principal
-- **SearchController.php**: Gestiona búsquedas de componentes
-- **DataController.php**: Importación de datos desde CSV
+### 2. Inicializar la Base de Datos
+```bash
+docker exec php-app php bin/init-db.php
+```
 
-## 🚀 Uso
+### 3. Acceso
+- **Web**: [http://localhost:8000](http://localhost:8000)
+- **Login**: admin / admin123 (por defecto)
 
-### Iniciar el proyecto con Docker
+## 🧪 Testing
+
+El proyecto cuenta con una suite completa de tests usando PHPUnit.
 
 ```bash
-docker-compose up -d
+# Ejecutar todos los tests
+docker exec php-app ./vendor/bin/phpunit
+
+# Ejecutar con detalles
+docker exec php-app ./vendor/bin/phpunit --testdox
 ```
 
-### Acceder a las rutas
+## 🛠️ Tecnologías Utilizadas
 
-1. **Página principal** (test de conexiones):
-   ```
-   http://localhost:8000/
-   ```
+- **Backend**: PHP 8.0+ (Compatible con Enums vía clases de constantes)
+- **Base de Datos**: PostgreSQL + pgvector
+- **IA**: Ollama (Modelo llama3 por defecto)
+- **Librerías**: 
+  - GuzzleHttp (Peticiones API)
+  - Dompdf (Generación de PDF)
+  - PHPUnit (Testing)
 
-2. **Buscador de componentes**:
-   ```
-   http://localhost:8000/search
-   ```
+## 📈 CI/CD
 
-3. **Importar datos** (requiere clave):
-   ```
-   http://localhost:8000/data?key=12345
-   ```
+Cada `push` a este repositorio dispara un flujo de trabajo en GitHub Actions que:
+1. Levanta el entorno completo en Docker.
+2. Instala dependencias con Composer.
+3. Inicializa la base de datos.
+4. Ejecuta la suite de tests completa.
 
-## 🔧 Configuración
-
-Edita `config/config.php` para cambiar:
-- Credenciales de base de datos
-- URL de Ollama
-- Modelo de IA a usar
-- Límites de importación
-- Clave de acceso
-
-## 📦 PSR-4 Autoloading
-
-Este proyecto usa **PSR-4** para autoloading de clases con Composer:
-
-### Namespaces Configurados
-
-| Namespace | Directorio | Uso |
-|-----------|------------|-----|
-| `App\` | `src/` | Código de producción |
-| `App\Controllers\` | `src/Controllers/` | Controladores |
-| `App\Models\` | `src/Models/` | Modelos |
-| `App\Tests\` | `tests/` | Tests unitarios |
-
-### Ejemplo de Uso
-
-```php
-// Importar clases
-use App\Controllers\HomeController;
-use App\Models\Database;
-
-// Usar directamente (sin require manual)
-$controller = new HomeController();
-$db = Database::getInstance();
-```
-
-### Regenerar Autoloader
-
-Si agregas nuevas clases, regenera el autoloader:
-
-```bash
-# En Windows
-.\regenerate-autoload.ps1
-
-# En Linux/Mac
-./regenerate-autoload.sh
-
-# O manualmente con Composer
-composer dump-autoload -o
-```
-
-**Documentación completa**: Ver [PSR4_GUIDE.md](PSR4_GUIDE.md)
-
-## 📦 Dependencias
-
-- PHP 8.x
-- PostgreSQL con extensión pgvector
-- Ollama con modelo llama3
-- Composer (guzzlehttp/guzzle)
-
-## 🎯 Ventajas de la arquitectura MVC
-
-1. **Separación de responsabilidades**: Cada capa tiene una función específica
-2. **Mantenibilidad**: Código más organizado y fácil de mantener
-3. **Reutilización**: Los modelos y vistas pueden reutilizarse
-4. **Testabilidad**: Más fácil escribir tests unitarios
-5. **Escalabilidad**: Fácil agregar nuevas funcionalidades
-
-## 📝 Archivos antiguos
-
-Los archivos originales (`index.php`, `data.php`, `question.php`) pueden eliminarse ya que su funcionalidad ha sido migrada a la nueva estructura MVC.
-
-## 🔄 Migración desde la versión anterior
-
-La nueva estructura mantiene toda la funcionalidad original pero organizada de forma más profesional:
-
-- `index.php` → `HomeController::index()`
-- `data.php` → `DataController::import()`
-- `question.php` → `SearchController::index()`
+---
+Desarrollado por **Sergio RP Leon**
