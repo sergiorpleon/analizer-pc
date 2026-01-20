@@ -37,3 +37,7 @@ tmp/
 models/
 *.bin
 *.gguf
+
+# --- Archivos antiguos (pre-MVC) ---
+*_old.php
+OLD_FILES.md

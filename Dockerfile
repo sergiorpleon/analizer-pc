@@ -20,5 +20,16 @@ COPY . .
 # Agregamos --verbose para ver el error real si falla
 RUN composer install --no-interaction --optimize-autoloader --no-scripts --ignore-platform-reqs --verbose
 
-# 6. Permisos y Apache
+# 6. Configurar Apache para usar public/ como DocumentRoot
 RUN a2enmod rewrite && chown -R www-data:www-data /var/www/html
+
+# Configurar DocumentRoot
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
+
+# Permitir .htaccess
+RUN echo '<Directory /var/www/html/public>\n\
+    Options Indexes FollowSymLinks\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' >> /etc/apache2/apache2.conf
