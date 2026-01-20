@@ -1,25 +1,39 @@
-# CakePHP 3
+# --- Proyectos PHP / Composer ---
+vendor/
+.phpunit.result.cache
+.php-cs-fixer.cache
+composer.lock
 
-/vendor/*
-/config/app.php
+# --- Variables de Entorno y Secretos ---
+.env
+.env.local
+.env.*.local
 
-/tmp/cache/models/*
-!/tmp/cache/models/empty
-/tmp/cache/persistent/*
-!/tmp/cache/persistent/empty
-/tmp/cache/views/*
-!/tmp/cache/views/empty
-/tmp/sessions/*
-!/tmp/sessions/empty
-/tmp/tests/*
-!/tmp/tests/empty
+# --- Docker & Base de Datos ---
+# No subir los datos persistentes de Postgres si mapeas volúmenes a carpetas locales
+docker/db_data/
+*.sql.gz
+*.sql
 
-/logs/*
-!/logs/empty
+# --- Sistema y Editores ---
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
 
-# CakePHP 2
+# --- Logs y Temporales ---
+logs/
+*.log
+temp/
+tmp/
 
-/app/tmp/*
-/app/Config/core.php
-/app/Config/database.php
-/vendors/*
+# --- Específicos de Antigravity (IA) ---
+# Si descargas modelos de Ollama localmente en una carpeta del proyecto
+models/
+*.bin
+*.gguf
