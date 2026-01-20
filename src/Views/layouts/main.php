@@ -70,11 +70,14 @@
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .nav a {
             display: inline-block;
-            margin-right: 20px;
             padding: 10px 20px;
             background: #667eea;
             color: white;
@@ -87,6 +90,23 @@
             background: #764ba2;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav a.logout {
+            background: #dc3545;
+        }
+
+        .nav a.logout:hover {
+            background: #c82333;
+        }
+
+        .nav .user-info {
+            margin-left: auto;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border-radius: 5px;
+            font-weight: 500;
         }
 
         footer {
@@ -104,7 +124,21 @@
         <nav class="nav">
             <a href="/">🏠 Inicio</a>
             <a href="/search">🔍 Buscar Componentes</a>
-            <a href="/data?key=12345">📊 Importar Datos</a>
+
+            <?php
+            // La sesión ya está iniciada en index.php
+            $isAuthenticated = isset($_SESSION['user']) && $_SESSION['user']['logged_in'] === true;
+
+            if ($isAuthenticated):
+                ?>
+                <a href="/data">📊 Importar Datos</a>
+                <span class="user-info">
+                    👤 <?php echo htmlspecialchars($_SESSION['user']['username']); ?>
+                </span>
+                <a href="/logout" class="logout">🚪 Cerrar Sesión</a>
+            <?php else: ?>
+                <a href="/login" style="margin-left: auto;">🔐 Iniciar Sesión</a>
+            <?php endif; ?>
         </nav>
 
         <?php echo $content; ?>

@@ -9,6 +9,11 @@
  * @author Sergio RP Leon
  */
 
+// Iniciar sesión ANTES de cualquier output
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Cargar el autoloader PSR-4 de Composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -16,6 +21,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Controllers\HomeController;
 use App\Controllers\SearchController;
 use App\Controllers\DataController;
+use App\Controllers\AuthController;
 use App\Controllers\ErrorController;
 
 // Obtener la URI solicitada
@@ -36,8 +42,23 @@ try {
             break;
 
         case '/data':
+            // Requiere autenticación
             $controller = new DataController();
             $controller->import();
+            break;
+
+        case '/login':
+            $controller = new AuthController();
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $controller->login();
+            } else {
+                $controller->showLogin();
+            }
+            break;
+
+        case '/logout':
+            $controller = new AuthController();
+            $controller->logout();
             break;
 
         default:

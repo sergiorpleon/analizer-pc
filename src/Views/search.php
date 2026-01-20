@@ -18,7 +18,37 @@ ob_start();
     </div>
 </form>
 
-<?php if (isset($error)): ?>
+<?php if (isset($noData) && $noData): ?>
+    <div
+        style="margin: 30px 0; padding: 30px; background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%); border: 2px solid #ffc107; border-radius: 15px; box-shadow: 0 5px 15px rgba(255, 193, 7, 0.2);">
+        <h3 style="color: #856404; margin-bottom: 15px;">📊 No hay datos disponibles</h3>
+        <p style="color: #856404; font-size: 1.1em; line-height: 1.6; margin-bottom: 20px;">
+            La base de datos está vacía. Necesitas <strong>importar datos</strong> primero para poder buscar componentes.
+        </p>
+
+        <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #667eea; margin-bottom: 15px;">🚀 Pasos para importar datos:</h4>
+            <ol style="color: #333; line-height: 2; margin-left: 20px;">
+                <?php if (!isset($_SESSION['user']) || !$_SESSION['user']['logged_in']): ?>
+                    <li><strong>Inicia sesión:</strong> <a href="/login"
+                            style="color: #667eea; text-decoration: none; font-weight: bold;">Ir a Login →</a></li>
+                <?php endif; ?>
+                <li><strong>Importa datos:</strong> <a href="/data"
+                        style="color: #667eea; text-decoration: none; font-weight: bold;">Ir a Importar Datos →</a></li>
+                <li><strong>Espera</strong> a que termine la importación (5-10 minutos)</li>
+                <li><strong>Vuelve aquí</strong> y realiza tu búsqueda</li>
+            </ol>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
+            <p style="margin: 0; color: #666;">
+                <strong>💡 Tip:</strong> La importación descarga datos de componentes PC desde GitHub y genera embeddings
+                con IA para búsquedas semánticas.
+            </p>
+        </div>
+    </div>
+
+<?php elseif (isset($error)): ?>
     <div class="message error">
         ❌ Error:
         <?php echo htmlspecialchars($error); ?>
@@ -52,7 +82,7 @@ ob_start();
         </div>
     <?php endforeach; ?>
 
-<?php elseif (!empty($query)): ?>
+<?php elseif (!empty($query) && !isset($noData)): ?>
     <div class="message" style="background: #fff3cd; color: #856404; border: 1px solid #ffeeba;">
         ℹ️ No se encontraron resultados para tu búsqueda.
     </div>

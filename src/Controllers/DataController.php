@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Models\Database;
 use App\Models\Component;
 use App\Models\OllamaService;
+use App\Models\Auth;
 
 class DataController
 {
@@ -20,25 +21,19 @@ class DataController
         $this->componentModel = new Component();
         $this->ollamaService = new OllamaService();
         $this->db = Database::getInstance();
+
+        // Requerir autenticación para este controlador
+        $auth = new Auth();
+        $auth->requireAuth();
     }
 
-    /**
-     * Verifica la autenticación mediante clave
-     */
-    private function checkAuth()
-    {
-        $key = $_GET['key'] ?? '';
-        if ($key !== $this->config['data']['access_key']) {
-            die("Acceso no autorizado. Debes proporcionar la clave correcta.");
-        }
-    }
+
 
     /**
      * Importa datos desde archivos CSV
      */
     public function import()
     {
-        $this->checkAuth();
         set_time_limit(0);
 
         echo "<h2>Iniciando poblamiento de Base de Datos...</h2>";
@@ -62,17 +57,24 @@ class DataController
      */
     private function processCSVFiles()
     {
-        $baseUrl = $this->config['data']['base_url'];
+        $dataSource = $this->config['data']['source'];
         $files = $this->config['data']['files'];
         $importLimit = $this->config['data']['import_limit'];
 
         echo "<h2>Iniciando importación de componentes...</h2>";
+        echo "<p>Fuente de datos: <strong>" . strtoupper($dataSource) . "</strong></p>";
 
         foreach ($files as $file) {
             echo "<p><strong>Procesando $file...</strong></p>";
 
             try {
-                $this->processCSVFile($baseUrl . $file, $file, $importLimit);
+                if ($dataSource === 'local') {
+                    $filePath = $this->config['data']['local_path'] . $file;
+                    $this->processCSVFile($filePath, $file, $importLimit, true);
+                } else {
+                    $fileUrl = $this->config['data']['base_url'] . $file;
+                    $this->processCSVFile($fileUrl, $file, $importLimit, false);
+                }
             } catch (\Exception $e) {
                 echo "<p>❌ Error procesando $file: " . $e->getMessage() . "</p>";
             }
@@ -81,13 +83,21 @@ class DataController
 
     /**
      * Procesa un archivo CSV individual
+     * @param string $source Ruta o URL del archivo
+     * @param string $filename Nombre del archivo
+     * @param int $limit Límite de filas
+     * @param bool $isLocal Si es archivo local o URL
      */
-    private function processCSVFile($url, $filename, $limit)
+    private function processCSVFile($source, $filename, $limit, $isLocal = false)
     {
         // Leer CSV
-        $csvData = file_get_contents($url);
+        if ($isLocal && !file_exists($source)) {
+            throw new \Exception("Archivo local no encontrado: $source");
+        }
+
+        $csvData = file_get_contents($source);
         if ($csvData === false) {
-            throw new \Exception("No se pudo leer el archivo CSV");
+            throw new \Exception("No se pudo leer el archivo CSV desde: $source");
         }
 
         $lines = explode("\n", $csvData);
