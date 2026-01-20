@@ -1,27 +1,28 @@
 <?php
-// src/Controllers/ErrorController.php
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
 class ErrorController
 {
     /**
-     * Muestra la página 404
+     * Maneja errores 404 (página no encontrada)
      */
-    public function notFound()
+    public function notFound(): void
     {
         http_response_code(404);
 
         $uri = $_SERVER['REQUEST_URI'] ?? '/';
+        $availableRoutes = ['/', '/search', '/login', '/data'];
 
-        // Cargar vista
         require __DIR__ . '/../Views/errors/404.php';
     }
 
     /**
-     * Muestra la página de error 500
+     * Maneja errores 500 (error del servidor)
      */
-    public function serverError(\Exception $exception)
+    public function serverError(\Exception $exception): void
     {
         http_response_code(500);
 
@@ -38,7 +39,6 @@ class ErrorController
             $exception->getTraceAsString()
         ));
 
-        // Cargar vista
         require __DIR__ . '/../Views/errors/500.php';
     }
 }

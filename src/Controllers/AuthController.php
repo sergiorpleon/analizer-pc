@@ -1,5 +1,6 @@
 <?php
-// src/Controllers/AuthController.php
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
@@ -7,7 +8,7 @@ use App\Models\Auth;
 
 class AuthController
 {
-    private $auth;
+    private Auth $auth;
 
     public function __construct()
     {
@@ -17,7 +18,7 @@ class AuthController
     /**
      * Muestra el formulario de login
      */
-    public function showLogin()
+    public function showLogin(): void
     {
         // Si ya está autenticado, redirigir al inicio
         if ($this->auth->isAuthenticated()) {
@@ -34,7 +35,7 @@ class AuthController
     /**
      * Procesa el login
      */
-    public function login()
+    public function login(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /login');
@@ -59,7 +60,7 @@ class AuthController
     /**
      * Cierra la sesión
      */
-    public function logout()
+    public function logout(): void
     {
         $this->auth->logout();
         header('Location: /login');

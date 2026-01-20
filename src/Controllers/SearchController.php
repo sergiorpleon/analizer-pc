@@ -1,5 +1,6 @@
 <?php
-// src/Controllers/SearchController.php
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
@@ -8,8 +9,8 @@ use App\Models\OllamaService;
 
 class SearchController
 {
-    private $componentModel;
-    private $ollamaService;
+    private Component $componentModel;
+    private OllamaService $ollamaService;
 
     public function __construct()
     {
@@ -20,13 +21,12 @@ class SearchController
     /**
      * Muestra el formulario de búsqueda y resultados
      */
-    public function index()
+    public function index(): void
     {
         $query = $_GET['q'] ?? '';
         $results = [];
         $error = null;
         $noData = false;
-
 
         if (!empty($query)) {
             try {
@@ -40,6 +40,18 @@ class SearchController
                 foreach ($results as &$result) {
                     $result['similarity'] = round(1 - $result['distancia'], 4);
                 }
+            } catch (\PDOException $e) {
+                // Detectar si la tabla no existe
+                $errorMsg = $e->getMessage();
+                if (
+                    strpos($errorMsg, 'relation "componentes_pc" does not exist') !== false ||
+                    strpos($errorMsg, 'Undefined table') !== false ||
+                    (strpos($errorMsg, 'componentes_pc') !== false && strpos($errorMsg, 'does not exist') !== false)
+                ) {
+                    $noData = true;
+                } else {
+                    $error = 'Error al buscar componentes: ' . $errorMsg;
+                }
             } catch (\Exception $e) {
                 $errorMsg = $e->getMessage();
 
@@ -47,7 +59,7 @@ class SearchController
                 if (
                     strpos($errorMsg, 'relation "componentes_pc" does not exist') !== false ||
                     strpos($errorMsg, 'Undefined table') !== false ||
-                    strpos($errorMsg, 'componentes_pc') !== false && strpos($errorMsg, 'does not exist') !== false
+                    (strpos($errorMsg, 'componentes_pc') !== false && strpos($errorMsg, 'does not exist') !== false)
                 ) {
                     $noData = true;
                 } else {
