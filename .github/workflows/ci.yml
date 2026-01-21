@@ -17,16 +17,16 @@ jobs:
 
       - name: Crear archivo .env para Docker
         run: |
-          echo "APP_NAME=Analizer PC" >> .env
-          echo "APP_ENV=local" >> .env
-          echo "EMBEDDING_PROVIDER=${{ secrets.EMBEDDING_PROVIDER || 'gemini' }}" >> .env
-          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
-          echo "DATA_SOURCE=${{ secrets.DATA_SOURCE || 'local' }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER || 'user' }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD || 'password' }}" >> .env
-          echo "DB_NAME=${{ secrets.DB_NAME || 'ai_db' }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST || 'db' }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT || '5432' }}" >> .env
+          echo 'APP_NAME="Analizer PC"' >> .env
+          echo 'APP_ENV="local"' >> .env
+          echo 'EMBEDDING_PROVIDER="${{ secrets.EMBEDDING_PROVIDER || 'gemini' }}"' >> .env
+          echo 'GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"' >> .env
+          echo 'DATA_SOURCE="${{ secrets.DATA_SOURCE || 'local' }}"' >> .env
+          echo 'DB_USER="${{ secrets.DB_USER || 'user' }}"' >> .env
+          echo 'DB_PASSWORD="${{ secrets.DB_PASSWORD || 'password' }}"' >> .env
+          echo 'DB_NAME="${{ secrets.DB_NAME || 'ai_db' }}"' >> .env
+          echo 'DB_HOST="${{ secrets.DB_HOST || 'db' }}"' >> .env
+          echo 'DB_PORT="${{ secrets.DB_PORT || '5432' }}"' >> .env
 
       - name: Build and start Docker containers
         run: docker compose up -d --build
