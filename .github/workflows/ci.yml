@@ -25,11 +25,8 @@ jobs:
           echo "DB_USER=${{ secrets.DB_USER || 'user' }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD || 'password' }}" >> .env
           echo "DB_NAME=${{ secrets.DB_NAME || 'ai_db' }}" >> .env
-          echo "VECTOR_DIMENSION=${{ secrets.VECTOR_DIMENSION }}" >> .env
           echo "DB_HOST=${{ secrets.DB_HOST || 'db' }}" >> .env
           echo "DB_PORT=${{ secrets.DB_PORT || '5432' }}" >> .env
-          echo "OLLAMA_URL=http://ollama:11434" >> .env
-          echo "OLLAMA_MODEL=llama3" >> .env
 
       - name: Build and start Docker containers
         run: docker compose up -d --build

@@ -20,14 +20,12 @@ return [
         // Dimensión del vector según el proveedor:
         // - Gemini (text-embedding-004): 768 dimensiones
         // - Ollama (llama3): 4096 dimensiones
-        'vector_dimension' => (int) ($_ENV['VECTOR_DIMENSION'] ?? (
-            ($_ENV['EMBEDDING_PROVIDER'] ?? 'ollama') === 'gemini' ? 768 : 4096
-        ))
+        'vector_dimension' => 768
     ],
     'ollama' => [
-        'url' => $_ENV['OLLAMA_URL'] ?? 'http://ollama:11434',
-        'model' => $_ENV['OLLAMA_MODEL'] ?? 'llama3',
-        'embedding_size' => (int) ($_ENV['VECTOR_DIMENSION'] ?? 4096)
+        'url' => 'http://ollama:11434',
+        'model' => 'llama3',
+        'embedding_size' => 4096
     ],
     'data' => [
         // Fuente de datos: 'url' o 'local'
