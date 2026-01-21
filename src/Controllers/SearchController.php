@@ -39,8 +39,8 @@ class SearchController
                 $results = $this->componentModel->searchSimilar($queryVector);
 
                 // Calcular similitud (1 - distancia)
-                foreach ($results as &$result) {
-                    $result['similarity'] = round(1 - $result['distancia'], 4);
+                foreach ($results as $key => $result) {
+                    $results[$key]['similarity'] = round(1 - $result['distancia'], 4);
                 }
 
                 // Guardar resultados en sesión para exportar
