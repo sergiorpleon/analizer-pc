@@ -9,7 +9,7 @@ Sistema avanzado de búsqueda semántica de componentes de PC utilizando **IA (E
 - **Sistema de Autenticación**: Gestión de usuarios y sesiones segura.
 - **Exportación Multiformato**: Genera informes de resultados en **JSON, XML, CSV y PDF**.
 - **CI/CD Integrado**: Pipeline de GitHub Actions para pruebas automáticas con Docker.
-- **Diseño Moderno**: Interfaz limpia con CSS moderno y layouts organizados.
+- **Diseño Moderno**: Interfaz limpia inspirada en Google, con CSS moderno y layouts organizados.
 
 ## 🏗️ Estructura del Proyecto
 
@@ -18,12 +18,13 @@ analizer-pc/
 ├── .github/workflows/      # CI/CD (GitHub Actions)
 ├── bin/                    # Scripts de utilidad (init-db.php, init_users.php)
 ├── config/                 # Configuración centralizada
+├── data/                   # Datos locales (CSV) para importación
 ├── public/                 # Punto de entrada (index.php) y assets
 ├── src/
 │   ├── Controllers/        # Lógica de control (Auth, Search, Data, etc.)
 │   ├── Enums/              # Enumeraciones (SessionKey)
-│   ├── Models/             # Modelos de datos y servicios core
-│   ├── Services/           # Servicios de IA y Exportación (SOLID)
+│   ├── Models/             # Modelos de datos
+│   ├── Services/           # Servicios de IA, Datos y Exportación
 │   └── Views/              # Plantillas y layouts
 ├── tests/                  # Suite de pruebas (Unitarias y Feature)
 ├── compose.yaml            # Orquestación de contenedores
@@ -36,8 +37,13 @@ analizer-pc/
 - Docker y Docker Compose
 - API Key de Gemini (opcional) u Ollama local.
 
+### 1. Configuración
+Copia el archivo de ejemplo y configura tus variables:
+```bash
+cp .env.example .env
+```
 
-### 1. Iniciar con Docker
+### 2. Iniciar con Docker
 Si usas **Ollama (Local)**, debes activar el perfil correspondiente:
 ```bash
 docker compose --profile local-ai up -d --build
@@ -48,19 +54,32 @@ Si usas **Gemini (Remoto)**, basta con:
 docker compose up -d --build
 ```
 
-### 2. Inicializar la Base de Datos y Usuarios
+### 3. Inicializar la Base de Datos y Usuarios
 ```bash
 docker exec php-app php bin/init-db.php
 docker exec php-app php bin/init_users.php
 ```
 
-### 3. Acceso
+### 4. Acceso
 - **Web**: [http://localhost:8000](http://localhost:8000)
 - **Login**: admin / admin123 (por defecto)
 
-
-
 ## 🛠️ Guía de Comandos Útiles
+
+### 🧪 Testing
+El proyecto incluye scripts simplificados para ejecutar pruebas:
+
+**En Windows (PowerShell):**
+```powershell
+.\run-tests.ps1 all      # Ejecutar todos los tests
+.\run-tests.ps1 unit     # Solo tests unitarios
+.\run-tests.ps1 feature  # Solo tests de integración
+```
+
+**En Linux/Mac (Bash):**
+```bash
+./run-tests.sh all
+```
 
 ### 🐳 Gestión de Docker
 | Acción | Comando |
@@ -94,23 +113,13 @@ docker exec php-app php bin/init_users.php
 | **Regenerar autoloader** | `docker exec php-app composer dump-autoload -o` |
 
 ## ⚙️ Configuración (.env)
-El proyecto utiliza un archivo `.env` para gestionar información sensible. Asegúrate de configurar:
-- `GEMINI_API_KEY`: Tu clave de Google AI.
 - `EMBEDDING_PROVIDER`: `gemini` o `ollama`.
-- `VECTOR_DIMENSION`: `768` para Gemini o `4096` para Ollama.
-
-## 🛠️ Tecnologías Utilizadas
-- **Backend**: PHP 8.0+
-- **Base de Datos**: PostgreSQL + pgvector
-- **IA**: Google Gemini API / Ollama (Llama3)
-- **Librerías**: GuzzleHttp, Dompdf, PHPUnit, PHP Dotenv
+- `GEMINI_API_KEY`: Requerido si el proveedor es `gemini`.
+- `DATA_SOURCE`: `github` (remoto) o `local`.
+- `VECTOR_DIMENSION`: Opcional. Se detecta automáticamente (768 para Gemini, 4096 para Ollama).
 
 ## 📈 CI/CD
-Cada `push` a este repositorio dispara un flujo de trabajo en GitHub Actions que:
-1. Levanta el entorno completo en Docker.
-2. Instala dependencias con Composer.
-3. Inicializa la base de datos.
-4. Ejecuta la suite de tests completa.
+Cada `push` dispara un flujo en GitHub Actions que valida el entorno, instala dependencias y ejecuta la suite de tests completa.
 
 ---
 Desarrollado por **Sergio RP Leon**
