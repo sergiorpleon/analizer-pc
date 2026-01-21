@@ -4,7 +4,13 @@
  * Ejecutar desde la raíz del proyecto: php test_mvc.php
  */
 
-echo "=== Verificación de Estructura MVC ===\n\n";
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Cargar variables de entorno
+if (file_exists(__DIR__ . '/../.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv->load();
+}
 
 // Verificar archivos de configuración
 echo "📋 Verificando archivos de configuración...\n";

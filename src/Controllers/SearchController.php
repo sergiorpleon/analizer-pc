@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Component;
-use App\Services\Ai\AiServiceInterface;
-use App\Services\Ai\OllamaService;
+use App\Services\Ai\EmbeddingServiceInterface;
+use App\Services\Ai\EmbeddingFactory;
 use App\Enums\SessionKey;
 
 class SearchController
 {
     private Component $componentModel;
-    private AiServiceInterface $aiService;
+    private EmbeddingServiceInterface $embeddingService;
 
     public function __construct()
     {
         $this->componentModel = new Component();
-        $this->aiService = new OllamaService();
+        $this->embeddingService = EmbeddingFactory::create();
     }
 
     /**
@@ -33,7 +33,7 @@ class SearchController
         if (!empty($query)) {
             try {
                 // Generar embedding usando la abstracción
-                $queryVector = $this->aiService->generateEmbedding($query);
+                $queryVector = $this->embeddingService->getEmbedding($query);
 
                 // Buscar componentes similares
                 $results = $this->componentModel->searchSimilar($queryVector);

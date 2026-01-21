@@ -4,64 +4,56 @@ declare(strict_types=1);
 
 namespace App\Services\Ai;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use Exception;
 
-class OllamaService implements AiServiceInterface
+/**
+ * Implementación de Ollama para generación de embeddings local.
+ */
+final class OllamaService implements EmbeddingServiceInterface
 {
-    private Client $client;
-    private string $baseUrl;
-    private string $model;
-
-    public function __construct()
-    {
-        $config = require __DIR__ . '/../../../config/config.php';
-        $this->client = new Client();
-        $this->baseUrl = $config['ollama']['url'];
-        $this->model = $config['ollama']['model'];
+    public function __construct(
+        private string $baseUrl,
+        private string $model
+    ) {
     }
 
-    public function generateEmbedding(string $text): array
+    public function getEmbedding(string $text): array
     {
-        try {
-            $response = $this->client->post($this->baseUrl . '/api/embeddings', [
-                'json' => [
-                    'model' => $this->model,
-                    'prompt' => $text
-                ]
-            ]);
+        $payload = [
+            'model' => $this->model,
+            'prompt' => $text
+        ];
 
-            $data = json_decode($response->getBody()->getContents(), true);
-            return $data['embedding'] ?? [];
-        } catch (GuzzleException $e) {
-            throw new \Exception("Error al generar embedding: " . $e->getMessage());
+        $ch = curl_init("{$this->baseUrl}/api/embeddings");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        curl_close($ch);
+
+        if ($response === false) {
+            throw new Exception("Error de conexión con Ollama: $error. ¿Está el contenedor encendido?");
         }
-    }
 
-    public function generateText(string $prompt): string
-    {
-        try {
-            $response = $this->client->post($this->baseUrl . '/api/generate', [
-                'json' => [
-                    'model' => $this->model,
-                    'prompt' => $prompt,
-                    'stream' => false
-                ]
-            ]);
-
-            $data = json_decode($response->getBody()->getContents(), true);
-            return $data['response'] ?? '';
-        } catch (GuzzleException $e) {
-            throw new \Exception("Error al generar texto: " . $e->getMessage());
+        if ($httpCode !== 200) {
+            throw new Exception("Ollama devolvió código $httpCode: $response");
         }
+
+        $data = json_decode($response, true);
+        return $data['embedding'] ?? throw new Exception("Ollama no devolvió un embedding válido.");
     }
 
     public function testConnection(): bool
     {
         try {
-            $this->generateText('Hola');
+            $this->getEmbedding('ping');
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return false;
         }
     }

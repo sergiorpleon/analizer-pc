@@ -6,8 +6,9 @@ namespace App\Controllers;
 
 use App\Models\Database;
 use App\Models\Component;
-use App\Services\Ai\OllamaService;
+use App\Services\Ai\EmbeddingFactory;
 use App\Services\Data\DataImporter;
+use App\Services\Data\DataSourceFactory;
 use App\Services\Data\FileLoader;
 use App\Models\Auth;
 
@@ -22,10 +23,10 @@ class DataController
         $this->config = require __DIR__ . '/../../config/config.php';
         $this->db = Database::getInstance();
 
-        // Inyectamos dependencias (o las instanciamos siguiendo la nueva estructura)
+        // Inyectamos dependencias usando las nuevas factorías SOLID
         $this->importer = new DataImporter(
             new Component(),
-            new OllamaService(),
+            EmbeddingFactory::create(),
             new FileLoader()
         );
 
@@ -36,43 +37,95 @@ class DataController
 
     public function import(): void
     {
+        // Si es una petición POST, ejecutamos la importación
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_import'])) {
+            $this->executeImport();
+            return;
+        }
+
+        // Si es GET, mostramos la página de confirmación
+        $showConfirmation = true;
+        require __DIR__ . '/../Views/data/import.php';
+    }
+
+    private function executeImport(): void
+    {
         set_time_limit(0);
 
-        echo "<h2>Iniciando poblamiento de Base de Datos...</h2>";
+        // Iniciamos el buffer para capturar el progreso
+        ob_start();
+
+        echo "<div class='text-blue-400'>[INFO] Iniciando poblamiento de Base de Datos...</div>";
 
         try {
             $this->db->initializeTable();
-            echo "<p>✅ Tabla inicializada correctamente.</p>";
+            echo "<div class='text-green-400'>[OK] Tabla inicializada correctamente.</div>";
         } catch (\Exception $e) {
-            die("<p>❌ Error al inicializar tabla: " . $e->getMessage() . "</p>");
+            echo "<div class='text-red-400'>[ERROR] " . htmlspecialchars($e->getMessage()) . "</div>";
+            $importOutput = ob_get_clean();
+            $showConfirmation = false;
+            require __DIR__ . '/../Views/data/import.php';
+            return;
         }
 
         $this->runImportProcess();
 
-        echo "<h3>¡Base de datos cargada con éxito!</h3>";
+        echo "<div class='text-google-yellow font-bold mt-4'>[FIN] ¡Base de datos cargada con éxito!</div>";
+
+        $importOutput = ob_get_clean();
+        $showConfirmation = false;
+        require __DIR__ . '/../Views/data/import.php';
     }
 
     private function runImportProcess(): void
     {
-        $dataSource = $this->config['data']['source'];
-        $files = $this->config['data']['files'];
-        $importLimit = $this->config['data']['import_limit'];
+        try {
+            // Usamos la factoría de origen de datos
+            $dataSource = DataSourceFactory::create();
+            $documents = $dataSource->getDocuments();
+            $importLimit = $this->config['data']['import_limit'];
 
-        echo "<h2>Iniciando importación de componentes...</h2>";
-        echo "<p>Fuente de datos: <strong>" . strtoupper($dataSource) . "</strong></p>";
-
-        foreach ($files as $file) {
-            echo "<p><strong>Procesando $file...</strong></p>";
-
-            try {
-                $source = ($dataSource === 'local')
-                    ? $this->config['data']['local_path'] . $file
-                    : $this->config['data']['base_url'] . $file;
-
-                $this->importer->importFromCsv($source, $file, $importLimit);
-            } catch (\Exception $e) {
-                echo "<p>❌ Error procesando $file: " . $e->getMessage() . "</p>";
+            if (empty($documents)) {
+                echo "<div class='text-amber-400'>[WARN] No se encontraron documentos para importar.</div>";
+                return;
             }
+
+            foreach ($documents as $filename => $content) {
+                echo "<div class='text-gray-300'>[FILE] Procesando $filename...</div>";
+
+                // Nota: DataImporter.importFromCsv espera un path, pero ahora tenemos el contenido.
+                // Refactorizamos DataImporter para procesar contenido directamente o adaptamos aquí.
+                // Para mantener compatibilidad, creamos un archivo temporal o mejor refactorizamos DataImporter.
+
+                $this->processDocumentContent($filename, $content, $importLimit);
+            }
+        } catch (\Exception $e) {
+            echo "<div class='text-red-400'>[ERROR] Error en el proceso de importación: " . htmlspecialchars($e->getMessage()) . "</div>";
+        }
+    }
+
+    private function processDocumentContent(string $filename, string $content, int $limit): void
+    {
+        $lines = explode("\n", $content);
+        $headers = str_getcsv(array_shift($lines));
+
+        $count = 0;
+        foreach ($lines as $line) {
+            if (empty(trim($line)) || $count >= $limit) {
+                continue;
+            }
+
+            $row = str_getcsv($line);
+            if (count($row) < 2) {
+                continue;
+            }
+
+            // Delegamos el procesamiento de la fila al importador
+            // (Necesitaremos un método público en DataImporter o mover la lógica aquí)
+            // Por simplicidad y siguiendo SOLID, el importador debería manejar el contenido.
+
+            $this->importer->processRowDirectly($row, $headers, $filename);
+            $count++;
         }
     }
 }

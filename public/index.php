@@ -17,6 +17,19 @@ if (session_status() === PHP_SESSION_NONE) {
 // Cargar el autoloader PSR-4 de Composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// Cargar variables de entorno
+if (file_exists(__DIR__ . '/../.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv->load();
+}
+
+// Validar entorno
+try {
+    \App\Services\Validation\EnvironmentValidator::validate();
+} catch (\App\Exceptions\EnvironmentException $e) {
+    die("Error de Configuración: " . $e->getMessage());
+}
+
 // Importar clases necesarias
 use App\Controllers\HomeController;
 use App\Controllers\SearchController;

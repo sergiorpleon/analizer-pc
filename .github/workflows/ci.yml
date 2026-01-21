@@ -10,6 +10,14 @@ jobs:
   tests:
     name: Run Tests
     runs-on: ubuntu-latest
+    
+    # Definimos las variables aquí para que sea fácil cambiarlas
+    env:
+      EMBEDDING_PROVIDER: gemini
+      DATA_SOURCE: local
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: ai_db
 
     steps:
       - name: Checkout code
@@ -17,6 +25,9 @@ jobs:
 
       - name: Build and start Docker containers
         run: docker compose up -d --build
+        env:
+          # Activa automáticamente el perfil 'local-ai' si el proveedor es ollama
+          COMPOSE_PROFILES: ${{ env.EMBEDDING_PROVIDER == 'ollama' && 'local-ai' || '' }}
 
       - name: Install Dependencies
         run: |
@@ -27,7 +38,6 @@ jobs:
       - name: Wait for Database
         run: |
           echo "Waiting for PostgreSQL to be ready..."
-          # We use a loop to wait for the database to accept connections
           for i in {1..30}; do
             if docker exec postgres-db pg_isready -U user -d ai_db; then
               echo "PostgreSQL is ready!"

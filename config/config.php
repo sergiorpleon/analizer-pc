@@ -3,16 +3,31 @@
 
 return [
     'database' => [
-        'host' => 'db',
-        'dbname' => 'ai_db',
-        'user' => 'user',
-        'password' => 'password',
-        'dsn' => 'pgsql:host=db;dbname=ai_db'
+        'host' => $_ENV['DB_HOST'] ?? 'db',
+        'dbname' => $_ENV['DB_NAME'] ?? 'ai_db',
+        'user' => $_ENV['DB_USER'] ?? 'user',
+        'password' => $_ENV['DB_PASSWORD'] ?? 'password',
+        'dsn' => sprintf(
+            'pgsql:host=%s;dbname=%s;port=%s',
+            $_ENV['DB_HOST'] ?? 'db',
+            $_ENV['DB_NAME'] ?? 'ai_db',
+            $_ENV['DB_PORT'] ?? '5432'
+        )
+    ],
+    'ai' => [
+        'provider' => $_ENV['EMBEDDING_PROVIDER'] ?? 'ollama',
+        'gemini_key' => $_ENV['GEMINI_API_KEY'] ?? '',
+        // Dimensión del vector según el proveedor:
+        // - Gemini (text-embedding-004): 768 dimensiones
+        // - Ollama (llama3): 4096 dimensiones
+        'vector_dimension' => (int) ($_ENV['VECTOR_DIMENSION'] ?? (
+            ($_ENV['EMBEDDING_PROVIDER'] ?? 'ollama') === 'gemini' ? 768 : 4096
+        ))
     ],
     'ollama' => [
-        'url' => 'http://ollama:11434',
-        'model' => 'llama3',
-        'embedding_size' => 4096
+        'url' => $_ENV['OLLAMA_URL'] ?? 'http://ollama:11434',
+        'model' => $_ENV['OLLAMA_MODEL'] ?? 'llama3',
+        'embedding_size' => (int) ($_ENV['VECTOR_DIMENSION'] ?? 4096)
     ],
     'data' => [
         // Fuente de datos: 'url' o 'local'

@@ -7,6 +7,10 @@ services:
       - .:/var/www/html
     ports:
       - "8000:80"
+    environment:
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-ollama}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - DATA_SOURCE=${DATA_SOURCE:-github}
     networks:
       - ai-network
     depends_on:
@@ -19,18 +23,19 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: ai_db
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-ai_db}
     networks:
       - ai-network
     volumes:
-      - postgres_data:/var/lib/postgresql/data # <--- Añade esto
+      - postgres_data:/var/lib/postgresql/data
 
   # IA Local con Ollama
   ollama:
     image: ollama/ollama:latest
     container_name: ollama-service
+    profiles: ["local-ai"]
     ports:
       - "11434:11434"
     volumes:

@@ -3,40 +3,22 @@ $title = '404 - Página no encontrada';
 ob_start();
 ?>
 
-<div style="text-align: center; padding: 60px 20px;">
-    <h1 style="font-size: 6em; margin: 0; color: #667eea;">404</h1>
-    <h2 style="color: #764ba2; margin: 20px 0;">Página no encontrada</h2>
-
-    <p style="font-size: 1.2em; color: #666; margin: 30px 0;">
-        Lo sentimos, la ruta <code
-            style="background: #f8f9fa; padding: 5px 10px; border-radius: 5px; color: #667eea;"><?php echo htmlspecialchars($uri); ?></code>
-        no existe.
-    </p>
-
-    <div style="margin: 40px 0;">
-        <a href="/"
-            style="display: inline-block; padding: 15px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; margin: 10px; transition: all 0.3s ease;">
-            🏠 Volver al inicio
-        </a>
-        <a href="/search"
-            style="display: inline-block; padding: 15px 30px; background: #764ba2; color: white; text-decoration: none; border-radius: 8px; margin: 10px; transition: all 0.3s ease;">
-            🔍 Ir al buscador
-        </a>
+<div class="text-center py-20 space-y-6">
+    <div class="inline-flex p-6 bg-red-50 rounded-full text-google-red">
+        <svg class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
     </div>
-
-    <div style="margin-top: 60px; padding: 30px; background: #f8f9fa; border-radius: 10px; text-align: left;">
-        <h3 style="color: #667eea; margin-bottom: 15px;">💡 Rutas disponibles:</h3>
-        <ul style="list-style: none; padding: 0; line-height: 2.5;">
-            <li>
-                <strong style="color: #667eea;">GET /</strong> - Página principal con tests de conexión
-            </li>
-            <li>
-                <strong style="color: #667eea;">GET /search</strong> - Buscador de componentes PC
-            </li>
-            <li>
-                <strong style="color: #667eea;">GET /data?key=12345</strong> - Importar datos desde CSV
-            </li>
-        </ul>
+    <h1 class="text-6xl font-extrabold text-gray-900">404</h1>
+    <h2 class="text-2xl font-bold text-gray-700">Página no encontrada</h2>
+    <p class="text-gray-500 max-w-md mx-auto">
+        Lo sentimos, la página que estás buscando no existe o ha sido movida.
+    </p>
+    <div class="pt-6">
+        <a href="/" class="btn-google px-8 py-3">
+            Volver al Inicio
+        </a>
     </div>
 </div>
 

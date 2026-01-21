@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Database;
-use App\Services\Ai\OllamaService;
 
 class HomeController
 {
@@ -32,19 +31,20 @@ class HomeController
             ];
         }
 
-        // Test de conexión a Ollama
+        // Test de conexión al Proveedor de IA (Ollama o Gemini)
         try {
-            $ollama = new OllamaService();
-            if ($ollama->testConnection()) {
+            $aiService = \App\Services\Ai\EmbeddingFactory::create();
+            if ($aiService->testConnection()) {
+                $providerName = getenv('EMBEDDING_PROVIDER') === 'gemini' ? 'Gemini' : 'Ollama';
                 $messages[] = [
                     'type' => 'success',
-                    'text' => '✅ Conexión con Ollama exitosa.'
+                    'text' => "✅ Conexión con $providerName exitosa."
                 ];
             }
         } catch (\Exception $e) {
             $messages[] = [
                 'type' => 'error',
-                'text' => '❌ Error en Ollama: ' . $e->getMessage()
+                'text' => '❌ Error en IA: ' . $e->getMessage()
             ];
         }
 

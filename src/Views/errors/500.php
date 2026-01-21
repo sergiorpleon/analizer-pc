@@ -1,63 +1,30 @@
 <?php
-$title = '500 - Error del servidor';
+$title = '500 - Error del Servidor';
 ob_start();
 ?>
 
-<div style="text-align: center; padding: 60px 20px;">
-    <h1 style="font-size: 6em; margin: 0; color: #f5576c;">500</h1>
-    <h2 style="color: #f093fb; margin: 20px 0;">Error del servidor</h2>
-
-    <p style="font-size: 1.2em; color: #666; margin: 30px 0;">
-        Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo más tarde.
+<div class="text-center py-20 space-y-6">
+    <div class="inline-flex p-6 bg-amber-50 rounded-full text-google-yellow">
+        <svg class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+    </div>
+    <h1 class="text-6xl font-extrabold text-gray-900">500</h1>
+    <h2 class="text-2xl font-bold text-gray-700">Error interno del servidor</h2>
+    <p class="text-gray-500 max-w-md mx-auto">
+        Algo salió mal en nuestro lado. Por favor, inténtalo de nuevo más tarde.
     </p>
-
-    <?php if (!$isProduction && isset($exception)): ?>
-        <div
-            style="margin: 40px 0; padding: 30px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; text-align: left;">
-            <h3 style="color: #856404; margin-bottom: 15px;">⚠️ Detalles del error (solo en desarrollo):</h3>
-
-            <div
-                style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0; font-family: monospace; font-size: 0.9em;">
-                <p><strong>Mensaje:</strong>
-                    <?php echo htmlspecialchars($exception->getMessage()); ?>
-                </p>
-                <p><strong>Archivo:</strong>
-                    <?php echo htmlspecialchars($exception->getFile()); ?>
-                </p>
-                <p><strong>Línea:</strong>
-                    <?php echo $exception->getLine(); ?>
-                </p>
-            </div>
-
-            <details style="margin-top: 20px;">
-                <summary
-                    style="cursor: pointer; color: #856404; font-weight: bold; padding: 10px; background: white; border-radius: 5px;">
-                    Ver Stack Trace completo
-                </summary>
-                <pre
-                    style="background: white; padding: 20px; border-radius: 8px; margin-top: 10px; overflow-x: auto; font-size: 0.85em; line-height: 1.5;"><?php echo htmlspecialchars($exception->getTraceAsString()); ?></pre>
-            </details>
+    <?php if (isset($e)): ?>
+        <div class="max-w-2xl mx-auto mt-8 p-4 bg-gray-100 rounded-lg text-left overflow-x-auto">
+            <p class="text-xs font-mono text-gray-600"><?php echo htmlspecialchars($e->getMessage()); ?></p>
         </div>
     <?php endif; ?>
-
-    <div style="margin: 40px 0;">
-        <a href="/"
-            style="display: inline-block; padding: 15px 30px; background: #f5576c; color: white; text-decoration: none; border-radius: 8px; margin: 10px; transition: all 0.3s ease;">
-            🏠 Volver al inicio
-        </a>
-        <a href="javascript:history.back()"
-            style="display: inline-block; padding: 15px 30px; background: #f093fb; color: white; text-decoration: none; border-radius: 8px; margin: 10px; transition: all 0.3s ease;">
-            ← Página anterior
+    <div class="pt-6">
+        <a href="/" class="btn-google px-8 py-3">
+            Volver al Inicio
         </a>
     </div>
-
-    <?php if ($isProduction): ?>
-        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
-            <p style="color: #666;">
-                Si el problema persiste, por favor contacta al administrador del sistema.
-            </p>
-        </div>
-    <?php endif; ?>
 </div>
 
 <?php

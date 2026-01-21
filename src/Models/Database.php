@@ -50,7 +50,9 @@ class Database
 
     public function initializeTable(): void
     {
-        $embeddingSize = $this->config['ollama']['embedding_size'];
+        // Recargar configuración para obtener las dimensiones correctas
+        $config = require __DIR__ . '/../../config/config.php';
+        $embeddingSize = $config['ai']['vector_dimension'];
 
         $this->pdo->exec("DROP TABLE IF EXISTS componentes_pc;");
         $this->pdo->exec("CREATE TABLE componentes_pc (

@@ -1,37 +1,40 @@
-# instrucciones de desarrollo - Proyecto Agente Vectorial PHP
+# Instrucciones de Desarrollo - Proyecto Agente Vectorial PHP
 
-## Contexto del proyecto
-Estoy construyendo un agente de informacion tecnica usando PHP simple(sin framework pesados) bajo arquitectura PHP manual.
+## Contexto del Proyecto
+Agente de información técnica basado en PHP 8.2+ con arquitectura MVC y principios SOLID. El sistema es multi-proveedor (IA y Datos) y se gestiona mediante variables de entorno.
 
-Mantener la documentación técnica (.md) actualizada pero minimalista. Agrupar el contexto en una carpeta específica (ej. /docs) para no ensuciar la raíz del proyecto.
+## Reglas de Arquitectura
+1. **Patrón MVC**: Separación estricta entre Controladores, Modelos y Vistas.
+2. **SOLID & Design Patterns**:
+   - **Strategy Pattern**: Para proveedores de IA (`EmbeddingServiceInterface`) y fuentes de datos (`DataSourceInterface`).
+   - **Factory Pattern**: Para instanciar servicios dinámicamente según el entorno.
+   - **Dependency Inversion**: Los controladores dependen de interfaces, no de implementaciones concretas.
+3. **Multi-Proveedor**:
+   - **IA**: Soporte para Ollama (Local) y Gemini (Remoto).
+   - **Datos**: Soporte para Local (Filesystem) y Remoto (GitHub API).
 
-## Reglas de arquitectura
-1. **Patron MVC** Separa estrictamente Controladores, Modelos y Vistas
-2. **Patron SOLID** Implementa principios SOLID (S - Single Responsibility, O - Open/Closed, L - Liskov Substitution, I - Interface Segregation, D - Dependency Inversion)
+## Tecnologías Específicas
+- **Lenguaje**: PHP 8.2+ con tipado estricto (`declare(strict_types=1);`).
+- **Características PHP**: Constructor Property Promotion, Readonly Properties, Enums.
+- **Base de Datos**: PostgreSQL con extensión `pgvector`.
+- **Docker**: Orquestación con perfiles (`local-ai` para Ollama).
+- **Validación**: El sistema debe validar la integridad del entorno (`EnvironmentValidator`) al arrancar.
 
-## Tecnologias especificas
-- **Base de Datos**: Postgres con extension PGVector
-- **IA**: Ollama
-- **Lenguaje**: PHP 8.2+ con tipado estricto ('declare(strict_types=1);')
-- **Composer**: 2.2.15
-- **Docker**: Todo debe correr en una red bridge
-
-## Estructura del proyecto
-- **app/**: Directorio de la aplicacion
-- **vendor/**: Directorio de composer
+## Estructura del Proyecto
+- **bin/**: Scripts de utilidad y mantenimiento.
 - **src/**:
-  **Core/**          # Routing, Container de dependencias, Config.
-  **Controllers/**   # Recepción de inputs y retorno de respuestas (JSON/HTML).
-  **Models/**        # Entidades de datos puras (Data Objects).
-  **Services/**      # Lógica de negocio (Conector Ollama, Procesamiento RAG).
-  **Repositories/**  # Persistencia de datos y lógica de PGVector (SQL).
-- **public/**        # Archivos publicos
-- **tests/**:
-  - **Unit/**: Tests para Services y Models (sin DB, usando Mocks).
-  - **Integration/**: Tests que validan la conexión con Ollama y PGVector.
-  - **TestCase.php**: Clase base para configurar el entorno de pruebas.
-- **data.php**: Script para poblar la base de datos
-- **index.php**: Script para buscar en la base de datos
-- **question.php**: Script para buscar en la base de datos
+  - **Controllers/**: Gestión de peticiones y flujo de datos.
+  - **Models/**: Representación de datos y acceso a DB.
+  - **Services/**:
+    - **Ai/**: Implementaciones de `EmbeddingServiceInterface`.
+    - **Data/**: Implementaciones de `DataSourceInterface` e importadores.
+    - **Validation/**: Lógica de salud del entorno.
+  - **Views/**: Plantillas HTML con Tailwind CSS.
+- **public/**: Punto de entrada (`index.php`) y assets.
+- **tests/**: Suite de pruebas unitarias y de integración.
 
-
+## Configuración de Entorno (.env)
+- `EMBEDDING_PROVIDER`: `ollama` | `gemini`
+- `DATA_SOURCE`: `local` | `github`
+- `GEMINI_API_KEY`: Requerida si el proveedor es `gemini`.
+- `OLLAMA_URL`: URL del servicio Ollama (default: http://ollama:11434).

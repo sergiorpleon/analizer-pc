@@ -5,31 +5,35 @@ declare(strict_types=1);
 namespace App\Services\Data;
 
 use App\Models\Component;
-use App\Services\Ai\AiServiceInterface;
+use App\Services\Ai\EmbeddingServiceInterface;
 
-class DataImporter
+/**
+ * Servicio encargado de procesar e importar datos de componentes.
+ */
+final class DataImporter
 {
-    private Component $componentModel;
-    private AiServiceInterface $aiService;
-    private FileLoader $fileLoader;
-
     public function __construct(
-        Component $componentModel,
-        AiServiceInterface $aiService,
-        FileLoader $fileLoader
+        private Component $componentModel,
+        private EmbeddingServiceInterface $embeddingService,
+        private FileLoader $fileLoader
     ) {
-        $this->componentModel = $componentModel;
-        $this->aiService = $aiService;
-        $this->fileLoader = $fileLoader;
     }
 
     /**
-     * Importa componentes desde un archivo CSV.
+     * Importa componentes desde un archivo CSV (Legacy path support).
      */
     public function importFromCsv(string $source, string $filename, int $limit): void
     {
         $csvData = $this->fileLoader->load($source);
-        $lines = explode("\n", $csvData);
+        $this->importFromContent($csvData, $filename, $limit);
+    }
+
+    /**
+     * Importa componentes directamente desde el contenido de un CSV.
+     */
+    public function importFromContent(string $content, string $filename, int $limit): void
+    {
+        $lines = explode("\n", $content);
         $headers = str_getcsv(array_shift($lines));
 
         $count = 0;
@@ -43,12 +47,15 @@ class DataImporter
                 continue;
             }
 
-            $this->processRow($row, $headers, $filename);
+            $this->processRowDirectly($row, $headers, $filename);
             $count++;
         }
     }
 
-    private function processRow(array $row, array $headers, string $filename): void
+    /**
+     * Procesa una fila individual de datos.
+     */
+    public function processRowDirectly(array $row, array $headers, string $filename): void
     {
         $nombre = $row[0];
         $detalles = "Componente: $filename. ";
@@ -59,12 +66,19 @@ class DataImporter
             }
         }
 
-        // Generar embedding usando la abstracción del servicio AI
-        $embedding = $this->aiService->generateEmbedding($detalles);
+        try {
+            // Generar embedding usando la abstracción del servicio AI
+            $embedding = $this->embeddingService->getEmbedding($detalles);
 
-        // Guardar en base de datos
-        $this->componentModel->insert($filename, $nombre, $detalles, $embedding);
+            // Extraer la categoría del nombre del archivo (sin la extensión .csv)
+            $categoria = str_replace('.csv', '', $filename);
 
-        echo "<p>   ✅ Importado: $nombre</p>";
+            // Guardar en base de datos (categoria, nombre, detalles, embedding)
+            $this->componentModel->insert($categoria, $nombre, $detalles, $embedding);
+
+            echo "<div class='text-gray-400'>   [OK] Importado: $nombre</div>";
+        } catch (\Exception $e) {
+            echo "<div class='text-red-400'>   [ERROR] Error en $nombre: " . htmlspecialchars($e->getMessage()) . "</div>";
+        }
     }
 }

@@ -1,93 +1,80 @@
 <?php
-$title = 'Iniciar Sesión';
+$title = 'Iniciar Sesión - Analizador PC';
 ob_start();
 ?>
 
-<div
-    style="max-width: 400px; margin: 60px auto; padding: 40px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-    <h1 style="text-align: center; color: #667eea; margin-bottom: 30px;">🔐 Iniciar Sesión</h1>
-
-    <?php if (isset($error)): ?>
-        <div
-            style="padding: 15px; margin-bottom: 20px; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px;">
-            ❌
-            <?php echo htmlspecialchars($error); ?>
-        </div>
-    <?php endif; ?>
-
-    <form method="POST" action="/login" style="display: flex; flex-direction: column; gap: 20px;">
-        <div>
-            <label for="username" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">
-                Usuario
-            </label>
-            <input type="text" id="username" name="username" required autocomplete="username"
-                style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; transition: border-color 0.3s;"
-                onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#ddd'">
+<div class="max-w-md mx-auto mt-12">
+    <div class="card p-8 space-y-8">
+        <!-- Google-style Logo -->
+        <div class="text-center">
+            <h2 class="text-3xl font-bold tracking-tight">
+                <span class="text-google-blue">A</span><span class="text-google-red">n</span><span
+                    class="text-google-yellow">a</span><span class="text-google-blue">l</span><span
+                    class="text-google-green">i</span><span class="text-google-red">z</span><span
+                    class="text-google-blue">e</span><span class="text-google-green">r</span>
+            </h2>
+            <h3 class="mt-2 text-xl font-medium text-gray-900">Iniciar Sesión</h3>
+            <p class="mt-1 text-sm text-gray-500">Usa tu cuenta de administrador</p>
         </div>
 
-        <div>
-            <label for="password" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">
-                Contraseña
-            </label>
-            <input type="password" id="password" name="password" required autocomplete="current-password"
-                style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; transition: border-color 0.3s;"
-                onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#ddd'">
+        <?php if (isset($error)): ?>
+            <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm flex items-center gap-2">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span><?php echo htmlspecialchars($error); ?></span>
+            </div>
+        <?php endif; ?>
+
+        <form method="POST" action="/login" class="space-y-6">
+            <div class="space-y-1">
+                <label for="username" class="block text-sm font-medium text-gray-700">Usuario</label>
+                <input type="text" id="username" name="username" required autocomplete="username"
+                    class="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-google-blue focus:border-google-blue text-gray-900 outline-none transition-all">
+            </div>
+
+            <div class="space-y-1">
+                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password"
+                    class="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-google-blue focus:border-google-blue text-gray-900 outline-none transition-all">
+            </div>
+
+            <div class="flex items-center justify-between">
+                <a href="#" class="text-sm font-medium text-google-blue hover:underline">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <div class="pt-4 flex justify-between items-center">
+                <a href="/" class="text-sm font-medium text-google-blue hover:underline">Crear cuenta</a>
+                <button type="submit" class="btn-google px-8 py-2.5">
+                    Siguiente
+                </button>
+            </div>
+        </form>
+
+        <!-- Credentials Hint -->
+        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <p class="text-xs text-gray-500 text-center leading-relaxed">
+                <span class="font-semibold uppercase tracking-wider block mb-1">Acceso de Prueba</span>
+                Usuario: <code
+                    class="bg-white px-1.5 py-0.5 rounded border border-gray-200 font-mono text-gray-800">admin</code><br>
+                Password: <code
+                    class="bg-white px-1.5 py-0.5 rounded border border-gray-200 font-mono text-gray-800">admin123</code>
+            </p>
         </div>
-
-        <button type="submit"
-            style="padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"
-            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.4)'"
-            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-            Iniciar Sesión
-        </button>
-    </form>
-
-    <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center;">
-        <p style="margin: 0; color: #666; font-size: 0.9em;">
-            <strong>Credenciales por defecto:</strong><br>
-            Usuario: <code style="background: white; padding: 2px 8px; border-radius: 4px;">admin</code><br>
-            Contraseña: <code style="background: white; padding: 2px 8px; border-radius: 4px;">admin123</code>
-        </p>
     </div>
 
-    <div style="margin-top: 20px; text-align: center;">
-        <a href="/" style="color: #667eea; text-decoration: none;">
-            ← Volver al inicio
-        </a>
+    <div class="mt-8 flex justify-center space-x-6 text-xs text-gray-500">
+        <span>Español (España)</span>
+        <div class="flex space-x-4">
+            <span>Ayuda</span>
+            <span>Privacidad</span>
+            <span>Términos</span>
+        </div>
     </div>
 </div>
 
 <?php
 $content = ob_get_clean();
+require __DIR__ . '/../layouts/main.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?php echo $title; ?>
-    </title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-    </style>
-</head>
-
-<body>
-    <?php echo $content; ?>
-</body>
-
-</html>
