@@ -1,10 +1,10 @@
-# 🔍 Analizador de Componentes PC con IA
+# 🔍 Analizador de Películas con IA
 
-Sistema avanzado de búsqueda semántica de componentes de PC utilizando **IA (Embeddings)**, **PostgreSQL (pgvector)** y una arquitectura **MVC** robusta.
+Sistema avanzado de búsqueda semántica de películas utilizando **IA (Embeddings)**, **PostgreSQL (pgvector)** y una arquitectura **MVC** robusta.
 
 ## 🌟 Características Principales
 
-- **Búsqueda Semántica**: Encuentra componentes por descripción natural (ej: "procesador para gaming barato") gracias a Ollama o Gemini.
+- **Búsqueda Semántica**: Encuentra películas por descripción natural (ej: "película de ciencia ficción con viajes en el tiempo") gracias a Ollama o Gemini.
 - **Arquitectura MVC**: Separación clara de responsabilidades para un código mantenible y escalable.
 - **Sistema de Autenticación**: Gestión de usuarios y sesiones segura.
 - **Exportación Multiformato**: Genera informes de resultados en **JSON, XML, CSV y PDF**.
@@ -97,13 +97,6 @@ El proyecto incluye scripts simplificados para ejecutar pruebas:
 | **Inicializar DB (Tablas)** | `docker exec php-app php bin/init-db.php` |
 | **Crear usuario admin** | `docker exec php-app php bin/init_users.php` |
 | **Verificar estructura MVC** | `docker exec php-app php bin/test_mvc.php` |
-
-### 🧪 Testing
-| Acción | Comando |
-|--------|---------|
-| **Ejecutar todos los tests** | `docker exec php-app ./vendor/bin/phpunit` |
-| **Tests con formato legible** | `docker exec php-app ./vendor/bin/phpunit --testdox` |
-| **Ejecutar un test específico** | `docker exec php-app ./vendor/bin/phpunit tests/Feature/SearchControllerTest.php` |
 
 ### 📦 Composer y Dependencias
 | Acción | Comando |

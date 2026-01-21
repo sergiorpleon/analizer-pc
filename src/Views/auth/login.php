@@ -1,5 +1,5 @@
 <?php
-$title = 'Iniciar Sesión - Analizador PC';
+$title = 'Iniciar Sesión - Analizador de Películas';
 ob_start();
 ?>
 

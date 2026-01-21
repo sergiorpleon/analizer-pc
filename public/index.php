@@ -55,6 +55,11 @@ try {
             $controller->index();
             break;
 
+        case '/movie':
+            $controller = new SearchController();
+            $controller->show();
+            break;
+
         case '/data':
             // Requiere autenticación
             $controller = new DataController();

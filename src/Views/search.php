@@ -1,5 +1,5 @@
 <?php
-$title = 'Buscar Componentes - Analizador PC';
+$title = 'Buscar Películas - Analizador de Películas';
 ob_start();
 ?>
 
@@ -7,7 +7,7 @@ ob_start();
     <!-- Search Header -->
     <div class="text-center space-y-2">
         <h1 class="text-3xl font-bold text-gray-900">Buscador Inteligente</h1>
-        <p class="text-gray-500">Describe lo que necesitas y nuestra IA encontrará las mejores opciones.</p>
+        <p class="text-gray-500">Describe lo que te apetece ver y nuestra IA encontrará las mejores opciones.</p>
     </div>
 
     <!-- Search Form -->
@@ -18,7 +18,7 @@ ob_start();
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <input type="text" name="q" placeholder="Ej: Procesador potente para edición de video..."
+            <input type="text" name="q" placeholder="Ej: Película de acción con persecuciones..."
                 value="<?php echo htmlspecialchars($query); ?>"
                 class="flex-grow ml-4 bg-transparent border-none focus:ring-0 text-gray-900 text-lg outline-none"
                 autofocus>
@@ -46,7 +46,7 @@ ob_start();
                 <div class="space-y-4">
                     <h3 class="text-xl font-bold text-amber-900">Base de datos vacía</h3>
                     <p class="text-amber-800">
-                        Para poder realizar búsquedas, primero debes importar el catálogo de componentes.
+                        Para poder realizar búsquedas, primero debes importar el catálogo de películas.
                     </p>
                     <div class="bg-white/50 rounded-lg p-6 space-y-4">
                         <h4 class="font-semibold text-gray-900">Pasos recomendados:</h4>
@@ -125,8 +125,10 @@ ob_start();
                         <div class="p-6 space-y-4">
                             <div class="flex justify-between items-start gap-4">
                                 <div class="space-y-1">
-                                    <h4 class="text-xl font-bold text-gray-900 hover:text-google-blue cursor-pointer">
-                                        <?php echo htmlspecialchars($result['nombre']); ?>
+                                    <h4 class="text-xl font-bold text-gray-900 hover:text-google-blue">
+                                        <a href="/movie?id=<?php echo $result['id']; ?>">
+                                            <?php echo htmlspecialchars($result['nombre']); ?>
+                                        </a>
                                     </h4>
                                     <div class="flex items-center gap-2">
                                         <span
@@ -146,8 +148,8 @@ ob_start();
                             </p>
 
                             <div class="pt-4 border-t border-gray-100 flex justify-end">
-                                <button class="text-sm font-medium text-google-blue hover:underline">Ver detalles completos
-                                    →</button>
+                                <a href="/movie?id=<?php echo $result['id']; ?>" class="text-sm font-medium text-google-blue hover:underline">Ver detalles completos
+                                    →</a>
                             </div>
                         </div>
                     </div>
@@ -164,7 +166,7 @@ ob_start();
             </div>
             <h3 class="text-xl font-medium text-gray-900">No encontramos coincidencias</h3>
             <p class="text-gray-500 max-w-sm mx-auto">
-                Prueba describiendo el componente de otra forma o verifica si el catálogo está actualizado.
+                Prueba describiendo la película de otra forma o verifica si el catálogo está actualizado.
             </p>
             <a href="/search" class="text-google-blue hover:underline font-medium">Limpiar búsqueda</a>
         </div>

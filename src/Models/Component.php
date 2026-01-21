@@ -18,7 +18,7 @@ class Component
     }
 
     /**
-     * Inserta un componente en la base de datos
+     * Inserta una película en la base de datos
      */
     public function insert(string $categoria, string $nombre, string $detalles, array $embedding): bool
     {
@@ -32,12 +32,12 @@ class Component
 
             return $stmt->execute([$categoria, $nombre, $detalles, $vectorString]);
         } catch (\PDOException $e) {
-            throw new \Exception("Error al insertar componente: " . $e->getMessage());
+            throw new \Exception("Error al insertar película: " . $e->getMessage());
         }
     }
 
     /**
-     * Busca componentes similares usando búsqueda vectorial
+     * Busca películas similares usando búsqueda vectorial
      */
     public function searchSimilar(array $queryVector, ?int $limit = null): array
     {
@@ -48,7 +48,7 @@ class Component
         try {
             $vectorString = '[' . implode(',', $queryVector) . ']';
 
-            $sql = "SELECT nombre, detalles, categoria, (embedding <-> ?) as distancia 
+            $sql = "SELECT id, nombre, detalles, categoria, (embedding <-> ?) as distancia 
                     FROM componentes_pc 
                     ORDER BY distancia ASC 
                     LIMIT ?";
@@ -58,12 +58,12 @@ class Component
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            throw new \Exception("Error al buscar componentes: " . $e->getMessage());
+            throw new \Exception("Error al buscar películas: " . $e->getMessage());
         }
     }
 
     /**
-     * Obtiene todos los componentes
+     * Obtiene todas las películas
      */
     public function getAll(): array
     {
@@ -71,12 +71,12 @@ class Component
             $stmt = $this->db->query("SELECT id, categoria, nombre, detalles FROM componentes_pc");
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            throw new \Exception("Error al obtener componentes: " . $e->getMessage());
+            throw new \Exception("Error al obtener películas: " . $e->getMessage());
         }
     }
 
     /**
-     * Cuenta el total de componentes
+     * Cuenta el total de películas
      */
     public function count(): int
     {
@@ -84,7 +84,22 @@ class Component
             $stmt = $this->db->query("SELECT COUNT(*) FROM componentes_pc");
             return (int) $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            throw new \Exception("Error al contar componentes: " . $e->getMessage());
+            throw new \Exception("Error al contar películas: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Busca una película por su ID
+     */
+    public function findById(int $id): ?array
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM componentes_pc WHERE id = ?");
+            $stmt->execute([$id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: null;
+        } catch (\PDOException $e) {
+            throw new \Exception("Error al buscar película por ID: " . $e->getMessage());
         }
     }
 }

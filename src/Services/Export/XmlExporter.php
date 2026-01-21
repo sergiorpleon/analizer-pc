@@ -9,14 +9,14 @@ class XmlExporter implements ExportInterface
     public function export(array $results, string $query): void
     {
         header('Content-Type: text/xml');
-        header('Content-Disposition: attachment; filename="informe_componentes.xml"');
+        header('Content-Disposition: attachment; filename="informe_peliculas.xml"');
 
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><informe/>');
         $xml->addChild('consulta', htmlspecialchars($query));
-        $items = $xml->addChild('componentes');
+        $items = $xml->addChild('peliculas');
 
         foreach ($results as $result) {
-            $item = $items->addChild('componente');
+            $item = $items->addChild('pelicula');
             $item->addChild('nombre', htmlspecialchars($result['nombre']));
             $item->addChild('categoria', htmlspecialchars($result['categoria']));
             $item->addChild('detalles', htmlspecialchars($result['detalles']));

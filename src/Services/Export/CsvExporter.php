@@ -9,7 +9,7 @@ class CsvExporter implements ExportInterface
     public function export(array $results, string $query): void
     {
         header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="informe_componentes.csv"');
+        header('Content-Disposition: attachment; filename="informe_peliculas.csv"');
 
         $output = fopen('php://output', 'w');
         fputcsv($output, ['Nombre', 'Categoría', 'Detalles', 'Similitud']);

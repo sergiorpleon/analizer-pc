@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title ?? 'Analizador de Componentes PC'; ?></title>
+    <title><?php echo $title ?? 'Analizador de Películas'; ?></title>
     <!-- Tailwind CSS Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,7 +62,7 @@
                                     class="text-google-green">i</span><span class="text-google-red">z</span><span
                                     class="text-google-blue">e</span><span class="text-google-green">r</span>
                             </span>
-                            <span class="hidden sm:block text-gray-500 font-medium ml-1">PC</span>
+                            <span class="hidden sm:block text-gray-500 font-medium ml-1">Movies</span>
                         </a>
                     </div>
                     <nav class="hidden sm:ml-8 sm:flex sm:space-x-8">

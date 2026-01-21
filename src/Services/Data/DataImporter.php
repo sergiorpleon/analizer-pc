@@ -8,7 +8,7 @@ use App\Models\Component;
 use App\Services\Ai\EmbeddingServiceInterface;
 
 /**
- * Servicio encargado de procesar e importar datos de componentes.
+ * Servicio encargado de procesar e importar datos de películas.
  */
 final class DataImporter
 {
@@ -20,7 +20,7 @@ final class DataImporter
     }
 
     /**
-     * Importa componentes desde un archivo CSV (Legacy path support).
+     * Importa películas desde un archivo CSV (Legacy path support).
      */
     public function importFromCsv(string $source, string $filename, int $limit): void
     {
@@ -29,7 +29,7 @@ final class DataImporter
     }
 
     /**
-     * Importa componentes directamente desde el contenido de un CSV.
+     * Importa películas directamente desde el contenido de un CSV.
      */
     public function importFromContent(string $content, string $filename, int $limit): void
     {
@@ -57,8 +57,8 @@ final class DataImporter
      */
     public function processRowDirectly(array $row, array $headers, string $filename): void
     {
-        $nombre = $row[0];
-        $detalles = "Componente: $filename. ";
+        $nombre = $row[1];
+        $detalles = "Película: $filename. ";
 
         foreach ($headers as $index => $header) {
             if (isset($row[$index])) {
@@ -71,7 +71,7 @@ final class DataImporter
             $embedding = $this->embeddingService->getEmbedding($detalles);
 
             // Extraer la categoría del nombre del archivo (sin la extensión .csv)
-            $categoria = str_replace('.csv', '', $filename);
+            $categoria = $row[5];//str_replace('.csv', '', $filename);
 
             // Guardar en base de datos (categoria, nombre, detalles, embedding)
             $this->componentModel->insert($categoria, $nombre, $detalles, $embedding);

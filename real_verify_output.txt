@@ -1,0 +1,26 @@
+🚀 Iniciando importación REAL desde URL (límite 5 películas)...
+
+✅ Tabla reiniciada.
+📄 Procesando: imdb_top_1000.csv
+<div class='text-gray-400'>   [OK] Importado: The Shawshank Redemption</div><div class='text-gray-400'>   [OK] Importado: The Godfather</div><div class='text-gray-400'>   [OK] Importado: The Dark Knight</div><div class='text-gray-400'>   [OK] Importado: The Godfather: Part II</div><div class='text-gray-400'>   [OK] Importado: 12 Angry Men</div>
+🔍 Verificando 5 registros en BD:
+------------------------------------------
+🎬 TÍTULO:    The Lion King
+🏷️  GÉNERO:    Animation, Adventure, Drama
+📝 DETALLES:  Película: imdb_top_1000.csv. Poster_Link: https://m.media-amazon.com/images/M/MV5BYTYxNGMyZTYtMjE3MS00MzNjLWFjNmYtMDk3N2FmM2JiM2M1XkEyXkFqcGdeQXVyNjY...
+------------------------------------------
+🎬 TÍTULO:    Terminator 2: Judgment Day
+🏷️  GÉNERO:    Action, Sci-Fi
+📝 DETALLES:  Película: imdb_top_1000.csv. Poster_Link: https://m.media-amazon.com/images/M/MV5BMGU2NzRmZjUtOGUxYS00ZjdjLWEwZWItY2NlM2JhNjkxNTFmXkEyXkFqcGdeQXVyNjU...
+------------------------------------------
+🎬 TÍTULO:    The Shawshank Redemption
+🏷️  GÉNERO:    Drama
+📝 DETALLES:  Película: imdb_top_1000.csv. Poster_Link: https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTM...
+------------------------------------------
+🎬 TÍTULO:    Nuovo Cinema Paradiso
+🏷️  GÉNERO:    Drama, Romance
+📝 DETALLES:  Película: imdb_top_1000.csv. Poster_Link: https://m.media-amazon.com/images/M/MV5BM2FhYjEyYmYtMDI1Yy00YTdlLWI2NWQtYmEzNzAxOGY1NjY2XkEyXkFqcGdeQXVyNTA...
+------------------------------------------
+🎬 TÍTULO:    The Godfather
+🏷️  GÉNERO:    Crime, Drama
+📝 DETALLES:  Película: imdb_top_1000.csv. Poster_Link: https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzk...

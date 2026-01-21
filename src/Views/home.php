@@ -1,5 +1,5 @@
 <?php
-$title = 'Inicio - Analizador PC';
+$title = 'Inicio - Analizador de Películas';
 ob_start();
 ?>
 
@@ -7,10 +7,10 @@ ob_start();
     <!-- Hero Section -->
     <div class="text-center space-y-4">
         <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-            Búsqueda inteligente de <span class="text-google-blue">Componentes</span>
+            Búsqueda inteligente de <span class="text-google-blue">Películas</span>
         </h1>
         <p class="max-w-2xl mx-auto text-xl text-gray-500">
-            Utiliza inteligencia artificial para encontrar el hardware perfecto para tu próxima build.
+            Utiliza inteligencia artificial para encontrar la película perfecta para tu próxima sesión de cine.
         </p>
         <div class="flex justify-center gap-4 pt-4">
             <a href="/search" class="btn-google text-lg px-8 py-3">
@@ -76,8 +76,10 @@ ob_start();
                         1</div>
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900">Búsqueda Semántica</h4>
-                        <p class="text-gray-600">No busques solo por palabras clave. Describe lo que necesitas, como
-                            "una gráfica para jugar en 4K" y nuestra IA entenderá el contexto.</p>
+                        <p class="text-gray-600">No busques solo por palabras clave. Describe lo que te apetece ver,
+                            como
+                            "una película de ciencia ficción con viajes en el tiempo" y nuestra IA entenderá el
+                            contexto.</p>
                     </div>
                 </div>
                 <div class="flex gap-4">
@@ -86,7 +88,7 @@ ob_start();
                         2</div>
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900">Embeddings Vectoriales</h4>
-                        <p class="text-gray-600">Convertimos tus descripciones y los datos de los componentes en
+                        <p class="text-gray-600">Convertimos tus descripciones y los datos de las películas en
                             vectores matemáticos para encontrar las coincidencias más precisas.</p>
                     </div>
                 </div>
@@ -97,7 +99,7 @@ ob_start();
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900">Resultados Instantáneos</h4>
                         <p class="text-gray-600">Obtén una lista comparativa con porcentajes de similitud y detalles
-                            técnicos completos de cada componente.</p>
+                            completos de cada película.</p>
                     </div>
                 </div>
             </div>

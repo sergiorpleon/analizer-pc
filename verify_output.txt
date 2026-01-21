@@ -1,0 +1,23 @@
+🔍 Verificando importación con formato IMDB...
+
+✅ Tabla inicializada
+📥 Importando datos de prueba...
+<div class='text-gray-400'>   [OK] Importado: The Shawshank Redemption</div><div class='text-gray-400'>   [OK] Importado: The Godfather</div>✅ Importación finalizada
+
+🔍 Verificando resultados en BD...
+🎬 Película: Omohide poro poro
+🏷️  Categoría (Género): Animation, Drama, Romance
+📝 Detalles: Película: imdb_top_1000.csv. Poster_Link: https://m.media-amazon.com/images/M/MV5BMTY5NjI2MjQxMl5BM...
+
+🎬 Película: The Shawshank Redemption
+🏷️  Categoría (Género): Drama
+📝 Detalles: Película: imdb_top_1000.csv. Poster_Link: http://link1. Series_Title: The Shawshank Redemption. Rel...
+
+🎬 Película: Delicatessen
+🏷️  Categoría (Género): Comedy, Crime
+📝 Detalles: Película: imdb_top_1000.csv. Poster_Link: https://m.media-amazon.com/images/M/MV5BNjg5ZDM0MTEtYTZmN...
+
+🎬 Película: The Godfather
+🏷️  Categoría (Género): Crime, Drama
+📝 Detalles: Película: imdb_top_1000.csv. Poster_Link: http://link2. Series_Title: The Godfather. Released_Year:...
+

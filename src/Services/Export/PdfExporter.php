@@ -29,7 +29,7 @@ class PdfExporter implements ExportInterface
             </style>
         </head>
         <body>
-            <h1>Informe de Componentes PC</h1>
+            <h1>Informe de Películas</h1>
             <p><strong>Consulta:</strong> ' . htmlspecialchars($query) . '</p>
             <table>
                 <thead>
@@ -60,7 +60,7 @@ class PdfExporter implements ExportInterface
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        $dompdf->stream('informe_componentes.pdf', ['Attachment' => true]);
+        $dompdf->stream('informe_peliculas.pdf', ['Attachment' => true]);
         exit;
     }
 }

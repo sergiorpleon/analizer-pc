@@ -9,7 +9,7 @@ use App\Models\Component;
 use App\Services\Ai\EmbeddingServiceInterface;
 
 /**
- * Tests de integración para el modelo Component
+ * Tests de integración para el modelo de Películas
  * Requiere una base de datos de prueba configurada
  */
 class ComponentTest extends TestCase
@@ -72,6 +72,14 @@ class ComponentTest extends TestCase
         $this->assertTrue(
             method_exists($this->component, 'count'),
             'Component debe tener el método count'
+        );
+    }
+
+    public function testFindByIdMethodExists(): void
+    {
+        $this->assertTrue(
+            method_exists($this->component, 'findById'),
+            'Component debe tener el método findById'
         );
     }
 
