@@ -16,6 +16,7 @@ class SearchControllerTest extends TestCase
         // Limpiar variables globales
         $_GET = [];
         $_SESSION = [];
+        $_SERVER['REQUEST_URI'] = '/search';
     }
 
     public function testIndexMethodExists()
@@ -34,7 +35,7 @@ class SearchControllerTest extends TestCase
         $output = ob_get_clean();
 
         // Debe mostrar el formulario de búsqueda
-        $this->assertStringContainsString('Buscador de Componentes', $output);
+        $this->assertStringContainsString('Buscador Inteligente', $output);
         $this->assertStringContainsString('form', $output);
     }
 
@@ -47,7 +48,7 @@ class SearchControllerTest extends TestCase
         $output = ob_get_clean();
 
         // Debe mostrar el formulario sin resultados
-        $this->assertStringContainsString('Buscador de Componentes', $output);
+        $this->assertStringContainsString('Buscador Inteligente', $output);
     }
 
     public function testIndexWithQueryButNoData()
@@ -59,7 +60,7 @@ class SearchControllerTest extends TestCase
         $output = ob_get_clean();
 
         // Debe mostrar mensaje de no hay datos o error manejado
-        $this->assertStringContainsString('Buscador de Componentes', $output);
+        $this->assertStringContainsString('Buscador Inteligente', $output);
 
         // Puede mostrar "No hay datos", "No se encontraron resultados", "Error" o "Resultados encontrados"
         $hasStatusMessage =

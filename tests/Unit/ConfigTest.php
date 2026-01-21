@@ -14,6 +14,8 @@ class ConfigTest extends TestCase
         // Limpiar variables de entorno antes de cada test
         unset($_ENV['EMBEDDING_PROVIDER']);
         unset($_ENV['VECTOR_DIMENSION']);
+        putenv('EMBEDDING_PROVIDER');
+        putenv('VECTOR_DIMENSION');
     }
 
     public function testVectorDimensionDefaultsTo4096ForOllama(): void

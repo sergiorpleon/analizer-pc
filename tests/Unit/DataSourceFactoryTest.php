@@ -16,6 +16,7 @@ class DataSourceFactoryTest extends TestCase
         parent::setUp();
         // Limpiar variables de entorno antes de cada test
         unset($_ENV['DATA_SOURCE']);
+        putenv('DATA_SOURCE');
     }
 
     public function testCreatesLocalDataSourceWhenSourceIsLocal(): void

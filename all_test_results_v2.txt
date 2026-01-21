@@ -1,0 +1,103 @@
+PHPUnit 10.5.60 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.30
+Configuration: /var/www/html/phpunit.xml
+
+................................................................. 65 / 70 ( 92%)
+.....                                                             70 / 70 (100%)
+
+Time: 00:04.229, Memory: 12.00 MB
+
+Auth (App\Tests\Unit\Auth)
+ ✔ Login success
+ ✔ Login failure wrong password
+ ✔ Login failure nonexistent user
+ ✔ Is authenticated after login
+ ✔ Is not authenticated before login
+ ✔ Get user after login
+ ✔ Get user before login
+ ✔ Logout
+ ✔ Session contains user data
+
+Auth Controller (App\Tests\Feature\AuthController)
+ ✔ Show login displays form
+ ✔ Show login has correct form action
+ ✔ Show login has username field
+ ✔ Show login has password field
+ ✔ Show login has submit button
+ ✔ Show login displays error message
+ ✔ Login form has credentials hint
+
+Component (App\Tests\Feature\Component)
+ ✔ Component can be instantiated
+ ✔ Insert method accepts correct parameters
+ ✔ Search similar method exists
+ ✔ Get all method exists
+ ✔ Count method exists
+ ✔ Search similar accepts correct parameters
+
+Config (App\Tests\Unit\Config)
+ ✔ Vector dimension defaults to 4096 for ollama
+ ✔ Vector dimension defaults to 768 for gemini
+ ✔ Vector dimension can be overridden
+ ✔ Default provider is ollama
+ ✔ Data source defaults to url
+ ✔ Config has required keys
+ ✔ Database config has required keys
+ ✔ Ai config has required keys
+ ✔ Data config has files array
+
+Data Importer (App\Tests\Unit\DataImporter)
+ ✔ Data importer can be instantiated
+ ✔ Import from content method exists
+ ✔ Import from csv method exists
+ ✔ Process row directly method exists
+ ✔ Import from content accepts correct parameters
+ ✔ Process row directly accepts correct parameters
+
+Data Source Factory (App\Tests\Unit\DataSourceFactory)
+ ✔ Creates local data source when source is local
+ ✔ Creates git hub data source when source is github
+ ✔ Creates git hub data source by default
+ ✔ Throws exception for unsupported source
+ ✔ Uses env variable over getenv
+
+Database (App\Tests\Unit\Database)
+ ✔ Get instance returns singleton
+ ✔ Get instance returns database
+ ✔ Get pdo returns valid pdo instance
+ ✔ Initialize table method exists
+ ✔ Test connection method exists
+ ✔ Test connection returns boolean
+
+Embedding Factory (App\Tests\Unit\EmbeddingFactory)
+ ✔ Creates gemini service when provider is gemini
+ ✔ Creates ollama service when provider is ollama
+ ✔ Creates ollama service by default
+ ✔ Throws exception for unsupported provider
+ ✔ Uses env variable over getenv
+
+Home Controller (App\Tests\Feature\HomeController)
+ ✔ Index method exists
+
+Search Controller (App\Tests\Feature\SearchController)
+ ✔ Index method exists
+ ✔ Index without query
+ ✔ Index with empty query
+ ✔ Index with query but no data
+ ✔ Search form has correct action
+ ✔ Search form has query input
+ ✔ Search form has submit button
+ ✔ Query value is escaped
+ ✔ No data message has helpful information
+
+User (App\Tests\Unit\User)
+ ✔ Create user
+ ✔ Find by username
+ ✔ Find by username not found
+ ✔ Verify correct password
+ ✔ Verify incorrect password
+ ✔ Password is hashed
+ ✔ Update password
+
+OK (70 tests, 133 assertions)

@@ -15,12 +15,9 @@ return [
         )
     ],
     'ai' => [
-        'provider' => $_ENV['EMBEDDING_PROVIDER'] ?? 'ollama',
-        'gemini_key' => $_ENV['GEMINI_API_KEY'] ?? '',
-        // Dimensión del vector según el proveedor:
-        // - Gemini (text-embedding-004): 768 dimensiones
-        // - Ollama (llama3): 4096 dimensiones
-        'vector_dimension' => 768
+        'provider' => $_ENV['EMBEDDING_PROVIDER'] ?? getenv('EMBEDDING_PROVIDER') ?: 'ollama',
+        'gemini_key' => $_ENV['GEMINI_API_KEY'] ?? getenv('GEMINI_API_KEY') ?: '',
+        'vector_dimension' => (int) ($_ENV['VECTOR_DIMENSION'] ?? getenv('VECTOR_DIMENSION') ?: (($_ENV['EMBEDDING_PROVIDER'] ?? getenv('EMBEDDING_PROVIDER') ?: 'ollama') === 'ollama' ? 4096 : 768))
     ],
     'ollama' => [
         'url' => 'http://ollama:11434',

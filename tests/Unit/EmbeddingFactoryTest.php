@@ -17,6 +17,8 @@ class EmbeddingFactoryTest extends TestCase
         // Limpiar variables de entorno antes de cada test
         unset($_ENV['EMBEDDING_PROVIDER']);
         unset($_ENV['GEMINI_API_KEY']);
+        putenv('EMBEDDING_PROVIDER');
+        putenv('GEMINI_API_KEY');
     }
 
     public function testCreatesGeminiServiceWhenProviderIsGemini(): void

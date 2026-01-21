@@ -20,6 +20,7 @@ class AuthControllerTest extends TestCase
         $_SESSION = [];
         $_POST = [];
         $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_URI'] = '/login';
 
         $this->authController = new AuthController();
         $this->userModel = new User();

@@ -1,0 +1,82 @@
+PHPUnit 10.5.60 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.30
+Configuration: /var/www/html/phpunit.xml
+
+.WWWWWWWW                                                           9 / 9 (100%)
+
+Time: 00:01.831, Memory: 10.00 MB
+
+Search Controller (App\Tests\Feature\SearchController)
+ ✔ Index method exists
+ ⚠ Index without query
+ ⚠ Index with empty query
+ ⚠ Index with query but no data
+ ⚠ Search form has correct action
+ ⚠ Search form has query input
+ ⚠ Search form has submit button
+ ⚠ Query value is escaped
+ ⚠ No data message has helpful information
+
+8 tests triggered 2 PHP warnings:
+
+1) /var/www/html/src/Views/layouts/main.php:70
+Undefined array key "REQUEST_URI"
+
+Triggered by:
+
+* App\Tests\Feature\SearchControllerTest::testIndexWithEmptyQuery
+  /var/www/html/tests/Feature/SearchControllerTest.php:41
+
+* App\Tests\Feature\SearchControllerTest::testIndexWithQueryButNoData
+  /var/www/html/tests/Feature/SearchControllerTest.php:53
+
+* App\Tests\Feature\SearchControllerTest::testIndexWithoutQuery
+  /var/www/html/tests/Feature/SearchControllerTest.php:29
+
+* App\Tests\Feature\SearchControllerTest::testNoDataMessageHasHelpfulInformation
+  /var/www/html/tests/Feature/SearchControllerTest.php:119
+
+* App\Tests\Feature\SearchControllerTest::testQueryValueIsEscaped
+  /var/www/html/tests/Feature/SearchControllerTest.php:104
+
+* App\Tests\Feature\SearchControllerTest::testSearchFormHasCorrectAction
+  /var/www/html/tests/Feature/SearchControllerTest.php:74
+
+* App\Tests\Feature\SearchControllerTest::testSearchFormHasQueryInput
+  /var/www/html/tests/Feature/SearchControllerTest.php:84
+
+* App\Tests\Feature\SearchControllerTest::testSearchFormHasSubmitButton
+  /var/www/html/tests/Feature/SearchControllerTest.php:94
+
+2) /var/www/html/src/Views/layouts/main.php:74
+Undefined array key "REQUEST_URI"
+
+Triggered by:
+
+* App\Tests\Feature\SearchControllerTest::testIndexWithEmptyQuery
+  /var/www/html/tests/Feature/SearchControllerTest.php:41
+
+* App\Tests\Feature\SearchControllerTest::testIndexWithQueryButNoData
+  /var/www/html/tests/Feature/SearchControllerTest.php:53
+
+* App\Tests\Feature\SearchControllerTest::testIndexWithoutQuery
+  /var/www/html/tests/Feature/SearchControllerTest.php:29
+
+* App\Tests\Feature\SearchControllerTest::testNoDataMessageHasHelpfulInformation
+  /var/www/html/tests/Feature/SearchControllerTest.php:119
+
+* App\Tests\Feature\SearchControllerTest::testQueryValueIsEscaped
+  /var/www/html/tests/Feature/SearchControllerTest.php:104
+
+* App\Tests\Feature\SearchControllerTest::testSearchFormHasCorrectAction
+  /var/www/html/tests/Feature/SearchControllerTest.php:74
+
+* App\Tests\Feature\SearchControllerTest::testSearchFormHasQueryInput
+  /var/www/html/tests/Feature/SearchControllerTest.php:84
+
+* App\Tests\Feature\SearchControllerTest::testSearchFormHasSubmitButton
+  /var/www/html/tests/Feature/SearchControllerTest.php:94
+
+OK, but there were issues!
+Tests: 9, Assertions: 16, Warnings: 2, Deprecations: 1.
