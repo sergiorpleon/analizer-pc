@@ -66,6 +66,11 @@ try {
             $controller->import();
             break;
 
+        case '/data/stream':
+            $controller = new DataController();
+            $controller->streamImport();
+            break;
+
         case '/inform':
             $controller = new InformController();
             $controller->index();

@@ -65,7 +65,7 @@ ob_start();
                 <!-- Progress bar simulation -->
                 <div class="max-w-md mx-auto">
                     <div class="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-google-blue animate-[loading_2s_ease-in-out_infinite]" style="width: 30%;">
+                        <div class="h-full bg-google-blue transition-all duration-300" style="width: 0%;">
                         </div>
                     </div>
                     <p class="mt-2 text-xs text-gray-400 italic">Conectando con el servicio de IA...</p>
@@ -73,25 +73,72 @@ ob_start();
             </div>
 
             <style>
-                @keyframes loading {
-                    0% {
-                        transform: translateX(-100%);
-                    }
-
-                    100% {
-                        transform: translateX(400%);
-                    }
-                }
-
                 .hidden {
                     display: none;
                 }
             </style>
 
             <script>
-                document.getElementById('import-form').addEventListener('submit', function () {
-                    document.getElementById('confirmation-view').classList.add('hidden');
-                    document.getElementById('loading-view').classList.remove('hidden');
+                document.getElementById('import-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const confirmationView = document.getElementById('confirmation-view');
+                    const loadingView = document.getElementById('loading-view');
+                    const progressBar = document.querySelector('#loading-view .bg-google-blue');
+                    const progressText = document.querySelector('#loading-view p.italic');
+
+                    // Create log container if it doesn't exist
+                    let logContainer = document.getElementById('import-log-container');
+                    if (!logContainer) {
+                        logContainer = document.createElement('div');
+                        logContainer.id = 'import-log-container';
+                        logContainer.className = 'mt-4 text-left text-xs text-gray-400 font-mono h-32 overflow-y-auto bg-gray-50 p-2 rounded border border-gray-100';
+                        loadingView.appendChild(logContainer);
+                    }
+
+                    confirmationView.classList.add('hidden');
+                    loadingView.classList.remove('hidden');
+
+                    const evtSource = new EventSource("/data/stream");
+
+                    evtSource.onmessage = function (event) {
+                        const data = JSON.parse(event.data);
+
+                        // Update progress
+                        progressBar.style.width = data.progress + '%';
+
+                        // Update log/status
+                        if (data.log) {
+                            progressText.textContent = `Progreso: ${data.progress}%`;
+                            const logEntry = document.createElement('div');
+                            logEntry.innerHTML = data.log;
+                            logContainer.appendChild(logEntry);
+                            logContainer.scrollTop = logContainer.scrollHeight;
+                        }
+
+                        if (data.done) {
+                            evtSource.close();
+                            progressText.textContent = '¡Importación completada!';
+                            progressText.className = 'mt-2 text-sm font-bold text-green-600';
+
+                            // Show completion button
+                            if (!document.getElementById('completion-btn')) {
+                                const btn = document.createElement('a');
+                                btn.id = 'completion-btn';
+                                btn.href = '/search';
+                                btn.className = 'btn-google mt-4 inline-block';
+                                btn.textContent = 'Ir al Buscador';
+                                loadingView.appendChild(btn);
+                            }
+                        }
+                    };
+
+                    evtSource.onerror = function () {
+                        console.error("EventSource failed.");
+                        evtSource.close();
+                        progressText.textContent = 'Error en la conexión. Por favor recarga la página.';
+                        progressText.className = 'mt-2 text-sm font-bold text-red-600';
+                    };
                 });
             </script>
 
