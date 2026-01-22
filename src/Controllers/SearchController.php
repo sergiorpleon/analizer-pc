@@ -41,6 +41,7 @@ class SearchController
                 // Calcular similitud (1 - distancia)
                 foreach ($results as $key => $result) {
                     $results[$key]['similarity'] = round(1 - $result['distancia'], 4);
+                    $results[$key]['parsed_details'] = $this->parseDetails($result['detalles']);
                 }
 
                 // Guardar resultados en sesión para exportar

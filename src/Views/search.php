@@ -143,12 +143,28 @@ ob_start();
                                 </div>
                             </div>
 
-                            <p class="text-gray-600 leading-relaxed">
-                                <?php echo htmlspecialchars($result['detalles']); ?>
-                            </p>
+                            <div class="text-sm text-gray-600 mt-2">
+                                <?php if (!empty($result['parsed_details'])): ?>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                                        <?php foreach ($result['parsed_details'] as $key => $value): ?>
+                                            <?php 
+                                            // Omitir claves que parecen índices de columna (C0, C1, etc) o valores vacíos
+                                            if (preg_match('/^C\d+$/', $key) || empty($value)) continue;
+                                            ?>
+                                            <div class="flex gap-2">
+                                                <span class="font-medium text-gray-700 min-w-[80px]"><?php echo htmlspecialchars($key); ?>:</span>
+                                                <span class="text-gray-600 truncate"><?php echo htmlspecialchars($value); ?></span>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php else: ?>
+                                    <p class="leading-relaxed"><?php echo htmlspecialchars($result['detalles']); ?></p>
+                                <?php endif; ?>
+                            </div>
 
                             <div class="pt-4 border-t border-gray-100 flex justify-end">
-                                <a href="/movie?id=<?php echo $result['id']; ?>" class="text-sm font-medium text-google-blue hover:underline">Ver detalles completos
+                                <a href="/movie?id=<?php echo $result['id']; ?>"
+                                    class="text-sm font-medium text-google-blue hover:underline">Ver detalles completos
                                     →</a>
                             </div>
                         </div>
